@@ -1,0 +1,5 @@
+frontend/node_modules
+frontend/dist
+backend/.vs
+backend/bin
+backend/obj

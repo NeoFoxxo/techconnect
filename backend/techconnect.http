@@ -1,0 +1,6 @@
+@techconnect_HostAddress = http://localhost:5064
+
+GET {{techconnect_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

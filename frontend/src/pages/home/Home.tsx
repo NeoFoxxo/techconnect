@@ -8,9 +8,9 @@ export default function Home() {
 		<main>
 			<Box
 				sx={{
-					bgcolor: "background.paper",
-					pt: 8,
-					pb: 6,
+					// bgcolor: "#eeee",
+					pt: 5,
+					pb: 29,
 				}}
 			>
 				<Container maxWidth="xl">

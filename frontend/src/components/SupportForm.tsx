@@ -11,6 +11,14 @@ import {
 	TextField,
 } from "@mui/material"
 
+interface FormValues {
+	username: string
+	email: string
+	issue: string
+	urgency: string
+	tags: string[]
+}
+
 const SignUpSchema = Yup.object().shape({
 	username: Yup.string()
 		.required("Required")
@@ -22,30 +30,35 @@ const SignUpSchema = Yup.object().shape({
 	email: Yup.string().email("Invalid email").required("Required"),
 
 	issue: Yup.string().required("Required").min(5, "Issue is too short"),
+	urgency: Yup.string().required("Required"),
+	tags: Yup.array().required("Required").min(1, "Please select a tag"),
 })
 
 export default function SupportForm() {
-	const tags = ["Group Policy", "Nginx", "MacOS"]
-	const operatingSystems = ["Linux", "Windows", "MacOS"]
+	const tags = ["Group Policy", "Nginx", "Azure", "AWS", "Password Reset"]
+	const urgencyOptions = ["Low", "Normal", "Critical"]
 	const labelStyle = { paddingBottom: 2 }
+
+	const initialValues: FormValues = {
+		username: "",
+		email: "",
+		issue: "",
+		urgency: "",
+		tags: [],
+	}
+
 	return (
 		<Container sx={{ width: "55%", padding: 3 }}>
 			<Card sx={{ padding: 3, border: "2px solid #eeeeee" }}>
 				<Formik
-					initialValues={{
-						username: "",
-						email: "",
-						issue: "",
-					}}
+					initialValues={initialValues}
 					validationSchema={SignUpSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						// Convert username to lowercase before submitting
-						values.username = values.username.toLowerCase()
 						console.log(values)
 						setSubmitting(false)
 					}}
 				>
-					{({ errors, touched }) => (
+					{({ errors, touched, values, setFieldValue, handleBlur }) => (
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
 								<Grid item>
@@ -100,16 +113,28 @@ export default function SupportForm() {
 									</FormControl>
 								</Grid>
 								<Grid item>
-									<FormLabel htmlFor="os" sx={labelStyle}>
-										Select your operating system
+									<FormLabel htmlFor="urgency" sx={labelStyle}>
+										Problem Urgency
 									</FormLabel>
 									<Autocomplete
 										disablePortal
-										id="os"
-										options={operatingSystems}
-										sx={{ width: 300 }}
+										id="urgency"
+										value={values.urgency}
+										onChange={(_, value) =>
+											setFieldValue("urgency", value || null)
+										}
+										onBlur={handleBlur}
+										options={urgencyOptions}
+										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
-											<TextField {...params} label="OS" />
+											<TextField
+												{...params}
+												error={!!errors.urgency && touched.urgency}
+												helperText={
+													errors.urgency && touched.urgency && errors.urgency
+												}
+												label="Urgency"
+											/>
 										)}
 									/>
 								</Grid>
@@ -120,15 +145,22 @@ export default function SupportForm() {
 									<Autocomplete
 										multiple
 										id="tags"
+										value={values.tags}
+										onChange={(_, value) =>
+											setFieldValue("tags", value || null)
+										}
+										onBlur={handleBlur}
 										options={tags}
+										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
 											<TextField
 												{...params}
+												error={!!errors.tags && touched.tags}
+												helperText={errors.tags && touched.tags && errors.tags}
 												label="Select Tags"
 												placeholder="Tags"
 											/>
 										)}
-										sx={{ width: "500px" }}
 									/>
 								</Grid>
 								<Grid

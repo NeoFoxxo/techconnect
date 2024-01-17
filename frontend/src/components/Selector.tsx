@@ -11,39 +11,61 @@ export default function Selector() {
 		border: "2px solid white",
 		"&:hover": { border: "2px solid #1976d2", boxShadow: 3 },
 	}
+	const cardMediaSx = {
+		height: "28vh",
+		width: "auto",
+	}
 
 	return (
-		<Grid container xs justifyContent={"center"}>
-			<Card sx={cardSx}>
-				<Link to="/client">
-					<CardMedia
-						component={"img"}
-						height={140}
-						src="/img/sunset.jpg"
-						sx={{ height: "40vh", width: "auto" }}
-					/>
-					<CardContent>
-						<Typography variant="h5" align="center" color="text.primary">
-							Client
-						</Typography>
-					</CardContent>
-				</Link>
-			</Card>
-			<Card sx={cardSx}>
-				<Link to="/tech">
-					<CardMedia
-						component={"img"}
-						height={140}
-						src="/img/sunset.jpg"
-						sx={{ height: "40vh", width: "auto" }}
-					/>
-					<CardContent>
-						<Typography variant="h5" align="center" color="text.primary">
-							Technician
-						</Typography>
-					</CardContent>
-				</Link>
-			</Card>
+		<Grid container direction={"row"} paddingTop={8}>
+			<Grid item>
+				<Card sx={cardSx}>
+					<Link to="/client">
+						<CardMedia
+							component={"img"}
+							src="/img/sunset.jpg"
+							sx={cardMediaSx}
+						/>
+						<CardContent>
+							<Typography variant="h5" align="center" color="text.primary">
+								Client
+							</Typography>
+						</CardContent>
+					</Link>
+				</Card>
+			</Grid>
+			<Grid item>
+				<Card sx={cardSx}>
+					<Link to="/tech">
+						<CardMedia
+							component={"img"}
+							src="/img/sunset.jpg"
+							sx={cardMediaSx}
+						/>
+						<CardContent>
+							<Typography variant="h5" align="center" color="text.primary">
+								Technician
+							</Typography>
+						</CardContent>
+					</Link>
+				</Card>
+			</Grid>
+			<Grid item>
+				<Card sx={cardSx}>
+					<Link to="/manager">
+						<CardMedia
+							component={"img"}
+							src="/img/sunset.jpg"
+							sx={cardMediaSx}
+						/>
+						<CardContent>
+							<Typography variant="h5" align="center" color="text.primary">
+								Manager
+							</Typography>
+						</CardContent>
+					</Link>
+				</Card>
+			</Grid>
 		</Grid>
 	)
 }

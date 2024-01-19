@@ -20,7 +20,7 @@ export default function Selector() {
 		<Grid container direction={"row"} paddingTop={8}>
 			<Grid item>
 				<Card sx={cardSx}>
-					<Link to="/client">
+					<Link to="/client/createsupportrequest">
 						<CardMedia
 							component={"img"}
 							src="/img/sunset.jpg"

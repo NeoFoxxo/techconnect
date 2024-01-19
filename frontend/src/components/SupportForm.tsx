@@ -1,17 +1,22 @@
 import { Field, Form, Formik } from "formik"
 import * as Yup from "yup"
+import { useState } from "react"
 import {
+	Alert,
 	Autocomplete,
 	Button,
 	Card,
+	CircularProgress,
 	Container,
 	FormControl,
 	FormLabel,
 	Grid,
 	TextField,
 } from "@mui/material"
+import supportSubmit from "../utils/api/supportSubmit"
+import useIsMobile from "../utils/hooks/useIsMobile"
 
-interface FormValues {
+export interface SupportFormValues {
 	username: string
 	email: string
 	issue: string
@@ -19,27 +24,28 @@ interface FormValues {
 	tags: string[]
 }
 
-const SignUpSchema = Yup.object().shape({
+const SupportSchema = Yup.object().shape({
 	username: Yup.string()
-		.required("Required")
 		.required("Required")
 		.min(3, "Username is too short")
 		.max(20, "Username is too long")
 		.matches(/^[a-zA-Z0-9]+$/, "Username can only contain letters and numbers"),
-
-	email: Yup.string().email("Invalid email").required("Required"),
-
-	issue: Yup.string().required("Required").min(5, "Issue is too short"),
+	email: Yup.string().required("Required").email("Invalid email"),
+	issue: Yup.string().required("Required").min(10, "Issue is too short"),
 	urgency: Yup.string().required("Required"),
 	tags: Yup.array().required("Required").min(1, "Please select a tag"),
 })
 
-export default function SupportForm() {
-	const tags = ["Group Policy", "Nginx", "Azure", "AWS", "Password Reset"]
-	const urgencyOptions = ["Low", "Normal", "Critical"]
-	const labelStyle = { paddingBottom: 2 }
+const tags = ["Group Policy", "Nginx", "Azure", "AWS", "Password Reset"]
+const urgencyOptions = ["Low", "Normal", "Critical"]
+const labelStyle = { paddingBottom: 2 }
 
-	const initialValues: FormValues = {
+export default function SupportForm() {
+	const [errorMsg, setErrorMsg] = useState<string | null>(null)
+	const [isLoading, setLoading] = useState(false)
+	const isMobile = useIsMobile()
+
+	const initialValues: SupportFormValues = {
 		username: "",
 		email: "",
 		issue: "",
@@ -47,20 +53,33 @@ export default function SupportForm() {
 		tags: [],
 	}
 
+	async function handleSubmit(formData: SupportFormValues) {
+		setLoading(true)
+		const result = await supportSubmit(formData)
+		if (result.error) {
+			setErrorMsg(result.error)
+			setLoading(false)
+		} else {
+			setErrorMsg(null)
+			setLoading(false)
+		}
+	}
+
 	return (
-		<Container sx={{ width: "55%", padding: 3 }}>
+		<Container sx={{ width: isMobile ? "50%" : "auto", padding: 3 }}>
 			<Card sx={{ padding: 3, border: "2px solid #eeeeee" }}>
 				<Formik
 					initialValues={initialValues}
-					validationSchema={SignUpSchema}
+					validationSchema={SupportSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						console.log(values)
+						handleSubmit(values)
 						setSubmitting(false)
 					}}
 				>
 					{({ errors, touched, values, setFieldValue, handleBlur }) => (
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
+								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 								<Grid item>
 									<FormControl fullWidth>
 										<FormLabel htmlFor="username" sx={labelStyle}>
@@ -169,16 +188,18 @@ export default function SupportForm() {
 									justifyContent={"center"}
 									marginTop={2}
 								>
-									<Button type="submit" variant="contained" size="large">
-										Submit
-									</Button>
+									{isLoading ? (
+										<CircularProgress />
+									) : (
+										<Button type="submit" variant="contained" size="large">
+											Submit
+										</Button>
+									)}
 								</Grid>
 							</Grid>
 						</Form>
 					)}
 				</Formik>
-				{/* {errorMsg && <div className="text-red-600">{errorMsg}</div>} */}
-				{/* {successMsg && <div className="text-base-content">{successMsg}</div>} */}
 			</Card>
 		</Container>
 	)

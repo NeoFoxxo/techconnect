@@ -6,15 +6,11 @@ import { Link } from "react-router-dom"
 
 export default function Topbar() {
 	return (
-		<Box sx={{ flexGrow: 1 }}>
+		<Box>
 			<AppBar position="static">
 				<Toolbar>
 					<Link to="/">
-						<Typography
-							variant="h5"
-							component="div"
-							sx={{ flexGrow: 1, fontWeight: "bold" }}
-						>
+						<Typography variant="h5" component="div" fontWeight={"bold"}>
 							TechConnect
 						</Typography>
 					</Link>

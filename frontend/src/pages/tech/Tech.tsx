@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box"
-import SupportForm from "../../components/SupportForm"
 import Typography from "@mui/material/Typography"
+import LoginForm from "../../components/Login"
 
-export default function Client() {
+export default function Tech() {
 	return (
 		<Box>
 			<Typography
@@ -14,12 +14,12 @@ export default function Client() {
 				fontWeight="bold"
 				gutterBottom
 			>
-				Submit a support request
+				Technician Login
 			</Typography>
 			<Typography variant="h5" align="center" color="text.secondary" paragraph>
-				Fill out the form below to submit your support request
+				Login to your technician account
 			</Typography>
-			<SupportForm />
+			<LoginForm />
 		</Box>
 	)
 }

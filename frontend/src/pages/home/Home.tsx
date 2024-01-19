@@ -6,11 +6,7 @@ import Container from "@mui/material/Container"
 export default function Home() {
 	return (
 		<main>
-			<Box
-				sx={{
-					pt: 5,
-				}}
-			>
+			<Box paddingTop={5}>
 				<Container maxWidth="xl">
 					<Typography
 						component="h1"
@@ -30,7 +26,6 @@ export default function Home() {
 					>
 						Please choose your role
 					</Typography>
-
 					<Selector />
 				</Container>
 			</Box>

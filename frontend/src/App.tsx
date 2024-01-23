@@ -1,12 +1,19 @@
 import { Routes, Route } from "react-router-dom"
 import Home from "./pages/home/Home"
-import CreateSupportRequest from "./pages/client/createSupportRequest"
-import Topbar from "./components/Topbar" // Import the Navbar component
+import CreateSupportRequest from "./pages/client/CreateSupportRequest"
+import Topbar from "./components/Topbar"
 import Tech from "./pages/tech/Tech"
-
+import { ThemeProvider, createTheme } from "@mui/material/styles"
+import CssBaseline from "@mui/material/CssBaseline"
+const darkTheme = createTheme({
+	palette: {
+		mode: "dark",
+	},
+})
 export default function App() {
 	return (
-		<>
+		<ThemeProvider theme={darkTheme}>
+			<CssBaseline />
 			<Topbar />
 			<Routes>
 				<Route path="/" element={<Home />} />
@@ -16,6 +23,6 @@ export default function App() {
 				/>
 				<Route path="/tech" element={<Tech />} />
 			</Routes>
-		</>
+		</ThemeProvider>
 	)
 }

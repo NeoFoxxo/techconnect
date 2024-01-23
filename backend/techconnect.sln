@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "techconnect", "techconnect.csproj", "{C02EA640-356F-4528-A65D-FA2A45C0378B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "techconnect", "techconnect.csproj", "{877CC43A-1A2D-4C34-AE86-8BB629814B7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C02EA640-356F-4528-A65D-FA2A45C0378B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C02EA640-356F-4528-A65D-FA2A45C0378B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C02EA640-356F-4528-A65D-FA2A45C0378B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C02EA640-356F-4528-A65D-FA2A45C0378B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{877CC43A-1A2D-4C34-AE86-8BB629814B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877CC43A-1A2D-4C34-AE86-8BB629814B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877CC43A-1A2D-4C34-AE86-8BB629814B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877CC43A-1A2D-4C34-AE86-8BB629814B7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8C971CB3-07C0-43A4-B4FA-9C3D3C401ED3}
+		SolutionGuid = {CCAB765D-DB08-4E41-8127-ABFB0C25888E}
 	EndGlobalSection
 EndGlobal

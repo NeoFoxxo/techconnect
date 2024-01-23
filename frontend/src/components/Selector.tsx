@@ -17,7 +17,7 @@ export default function Selector() {
 	}
 
 	return (
-		<Grid container direction={"row"} paddingTop={8}>
+		<Grid container justifyContent={"center"} paddingTop={8}>
 			<Grid item>
 				<Card sx={cardSx}>
 					<Link to="/client/createsupportrequest">

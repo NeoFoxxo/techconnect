@@ -13,10 +13,10 @@ import {
 	Grid,
 	TextField,
 } from "@mui/material"
-import supportSubmit from "../utils/api/supportSubmit"
+import supportSubmit from "../utils/queries/supportSubmit"
 import useIsMobile from "../utils/hooks/useIsMobile"
 
-export interface SupportFormValues {
+export interface SupportFormData {
 	username: string
 	email: string
 	issue: string
@@ -45,7 +45,7 @@ export default function SupportForm() {
 	const [isLoading, setLoading] = useState(false)
 	const isMobile = useIsMobile()
 
-	const initialValues: SupportFormValues = {
+	const initialValues: SupportFormData = {
 		username: "",
 		email: "",
 		issue: "",
@@ -53,7 +53,7 @@ export default function SupportForm() {
 		tags: [],
 	}
 
-	async function handleSubmit(formData: SupportFormValues) {
+	async function handleSubmit(formData: SupportFormData) {
 		setLoading(true)
 		const result = await supportSubmit(formData)
 		if (result.error) {

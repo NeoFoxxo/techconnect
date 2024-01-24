@@ -5,11 +5,14 @@ import Topbar from "./components/Topbar"
 import Tech from "./pages/tech/Tech"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
+import TechLogin from "./pages/tech/TechLogin"
+
 const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
 	},
 })
+
 export default function App() {
 	return (
 		<ThemeProvider theme={darkTheme}>
@@ -22,6 +25,7 @@ export default function App() {
 					element={<CreateSupportRequest />}
 				/>
 				<Route path="/tech" element={<Tech />} />
+				<Route path="/tech/login" element={<TechLogin />} />
 			</Routes>
 		</ThemeProvider>
 	)

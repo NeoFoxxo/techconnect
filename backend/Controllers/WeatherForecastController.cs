@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using techconnect.Models;
 
 namespace techconnect.Controllers
 {

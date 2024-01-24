@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from "formik"
 import * as Yup from "yup"
-import { useState } from "react"
 import {
 	Alert,
 	Button,
@@ -12,8 +11,14 @@ import {
 	Grid,
 	TextField,
 } from "@mui/material"
-import loginSubmit from "../utils/api/loginSubmit"
+import loginSubmit from "../utils/queries/loginSubmit"
 import useIsMobile from "../utils/hooks/useIsMobile"
+import { useMutation } from "@tanstack/react-query"
+
+export interface LoginFormData {
+	email: string
+	password: string
+}
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().required("Required").email("Invalid email"),
@@ -23,21 +28,11 @@ const LoginSchema = Yup.object().shape({
 const labelStyle = { paddingBottom: 2 }
 
 export default function LoginForm() {
-	const [errorMsg, setErrorMsg] = useState<string | null>(null)
-	const [isLoading, setLoading] = useState(false)
 	const isMobile = useIsMobile()
 
-	async function handleSubmit(formData: { email: string; password: string }) {
-		setLoading(true)
-		const result = await loginSubmit(formData)
-		if (result.error) {
-			setErrorMsg(result.error)
-			setLoading(false)
-		} else {
-			setErrorMsg(null)
-			setLoading(false)
-		}
-	}
+	const login = useMutation({
+		mutationFn: (formData: LoginFormData) => loginSubmit(formData),
+	})
 
 	return (
 		<Container sx={{ width: isMobile ? "80vh" : "auto", padding: 5 }}>
@@ -46,14 +41,19 @@ export default function LoginForm() {
 					initialValues={{ email: "", password: "" }}
 					validationSchema={LoginSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						handleSubmit(values)
+						login.mutate(values)
 						setSubmitting(false)
 					}}
 				>
 					{({ errors, touched }) => (
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
-								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+								{login.isSuccess && (
+									<Alert severity="success">Successfully Logged In</Alert>
+								)}
+								{login.isError && (
+									<Alert severity="error">{login.error.message}</Alert>
+								)}
 								<Grid item>
 									<FormControl fullWidth>
 										<FormLabel htmlFor="email" sx={labelStyle}>
@@ -93,7 +93,7 @@ export default function LoginForm() {
 									justifyContent={"center"}
 									marginTop={2}
 								>
-									{isLoading ? (
+									{login.isPending ? (
 										<CircularProgress />
 									) : (
 										<Button type="submit" variant="contained" size="large">

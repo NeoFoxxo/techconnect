@@ -1,4 +1,4 @@
-namespace techconnect
+namespace techconnect.Models
 {
     public class WeatherForecast
     {

@@ -1,9 +1,8 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
+import LoginForm from "../../components/Login"
 
-export default function Tech() {
-	// TODO: if user is not authed redirect to tech login
-
+export default function TechLogin() {
 	return (
 		<Box>
 			<Typography
@@ -20,14 +19,7 @@ export default function Tech() {
 			<Typography variant="h5" align="center" color="text.secondary" paragraph>
 				Login to your technician account
 			</Typography>
-			<Typography
-				variant="body1"
-				align="center"
-				color="text.secondary"
-				paragraph
-			>
-				Welcome
-			</Typography>
+			<LoginForm />
 		</Box>
 	)
 }

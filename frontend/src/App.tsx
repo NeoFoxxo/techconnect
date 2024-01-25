@@ -6,6 +6,8 @@ import Tech from "./pages/tech/Tech"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import TechLogin from "./pages/tech/TechLogin"
+import NotFound from "./pages/notfound/NotFound"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 const darkTheme = createTheme({
 	palette: {
@@ -26,7 +28,9 @@ export default function App() {
 				/>
 				<Route path="/tech" element={<Tech />} />
 				<Route path="/tech/login" element={<TechLogin />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
+			<ReactQueryDevtools initialIsOpen={false} />
 		</ThemeProvider>
 	)
 }

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import LoginForm from "../../components/Login"
+import LoginForm from "../../components/LoginForm"
 
 export default function TechLogin() {
 	return (

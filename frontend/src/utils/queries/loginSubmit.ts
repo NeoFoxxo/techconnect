@@ -1,4 +1,4 @@
-import { LoginFormData } from "../../components/Login"
+import { LoginFormData } from "../../components/LoginForm"
 
 export default async function loginSubmit(
 	formData: LoginFormData
@@ -13,7 +13,7 @@ export default async function loginSubmit(
 	})
 	if (!res.ok) {
 		if (res.status === 401) throw new Error("Incorrect Credentials")
-		throw new Error(`An unexpected error occured: ${await res.text()}`)
+		throw new Error(`An unexpected error occured: ${res.status}`)
 	}
 
 	return res

@@ -31,6 +31,7 @@ export default function LoginForm() {
 	const isMobile = useIsMobile()
 
 	const login = useMutation({
+		mutationKey: ["loginSubmit"],
 		mutationFn: (formData: LoginFormData) => loginSubmit(formData),
 	})
 

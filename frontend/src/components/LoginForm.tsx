@@ -33,6 +33,7 @@ export default function LoginForm() {
 	const login = useMutation({
 		mutationKey: ["loginSubmit"],
 		mutationFn: (formData: LoginFormData) => loginSubmit(formData),
+		onSuccess: () => (window.location.href = "/tech"),
 	})
 
 	return (

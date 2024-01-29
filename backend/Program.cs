@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using techconnect.Data;
+using techconnect.Interfaces;
+using techconnect.Models;
+using techconnect.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +22,12 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
 
@@ -32,7 +35,7 @@ var app = builder.Build();
 
 app.UseCors();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<AppUser>();
 
 // Configure the HTTP request pipeline.
 

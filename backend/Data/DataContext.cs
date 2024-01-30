@@ -8,5 +8,6 @@ namespace techconnect.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

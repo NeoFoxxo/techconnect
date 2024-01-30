@@ -13,8 +13,7 @@ namespace techconnect.Repository
 
         public ICollection<string> GetSkills()
         {
-            return _context.Skills.Select(c => c.Name).ToList();
+            return _context.Skills.Select(s => s.Name).ToList();
         }
-
     }
 }

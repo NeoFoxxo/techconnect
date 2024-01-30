@@ -15,43 +15,49 @@ import {
 } from "@mui/material"
 import supportSubmit from "../utils/queries/supportSubmit"
 import useIsMobile from "../utils/hooks/useIsMobile"
+import { useQuery } from "@tanstack/react-query"
+import getSkills from "../utils/queries/getSkills"
 
 export interface SupportFormData {
-	username: string
+	name: string
 	email: string
-	issue: string
+	title: string
+	description: string
 	urgency: string
 	tags: string[]
 }
 
 const SupportSchema = Yup.object().shape({
-	username: Yup.string()
+	name: Yup.string()
 		.required("Required")
-		.min(3, "Username is too short")
-		.max(20, "Username is too long")
-		.matches(/^[a-zA-Z0-9]+$/, "Username can only contain letters and numbers"),
+		.min(3, "Name is too short")
+		.max(25, "Name is too long")
+		.matches(/^[a-zA-Z]+$/, "Name can only contain letters"),
 	email: Yup.string().required("Required").email("Invalid email"),
-	issue: Yup.string().required("Required").min(10, "Issue is too short"),
+	title: Yup.string().required("Required").min(5, "Subject is too short"),
+	description: Yup.string()
+		.required("Required")
+		.min(10, "Description is too short"),
 	urgency: Yup.string().required("Required"),
 	tags: Yup.array().required("Required").min(1, "Please select a tag"),
 })
 
-const tags = ["Group Policy", "Nginx", "Azure", "AWS", "Password Reset"]
 const urgencyOptions = ["Low", "Normal", "Critical"]
 const labelStyle = { paddingBottom: 2 }
+
+const initialValues: SupportFormData = {
+	name: "",
+	email: "",
+	title: "",
+	description: "",
+	urgency: "",
+	tags: [],
+}
 
 export default function SupportForm() {
 	const [errorMsg, setErrorMsg] = useState<string | null>(null)
 	const [isLoading, setLoading] = useState(false)
 	const isMobile = useIsMobile()
-
-	const initialValues: SupportFormData = {
-		username: "",
-		email: "",
-		issue: "",
-		urgency: "",
-		tags: [],
-	}
 
 	async function handleSubmit(formData: SupportFormData) {
 		setLoading(true)
@@ -64,6 +70,11 @@ export default function SupportForm() {
 			setLoading(false)
 		}
 	}
+
+	const skills = useQuery({
+		queryKey: ["getSkills"],
+		queryFn: () => getSkills(),
+	})
 
 	return (
 		<Container sx={{ width: isMobile ? "50%" : "auto", padding: 3 }}>
@@ -80,21 +91,22 @@ export default function SupportForm() {
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
 								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+								{skills.error && (
+									<Alert severity="error">{`Error fetching tags: ${skills.error.message}`}</Alert>
+								)}
 								<Grid item>
 									<FormControl fullWidth>
-										<FormLabel htmlFor="username" sx={labelStyle}>
-											Username
+										<FormLabel htmlFor="name" sx={labelStyle}>
+											Name
 										</FormLabel>
 										<Field
 											as={TextField}
-											id="username"
-											name="username"
-											placeholder="Username"
+											id="name"
+											name="name"
+											placeholder="Name"
 											type="text"
-											error={errors.username && touched.username}
-											helperText={
-												errors.username && touched.username && errors.username
-											}
+											error={errors.name && touched.name}
+											helperText={errors.name && touched.name && errors.name}
 										/>
 									</FormControl>
 								</Grid>
@@ -116,24 +128,43 @@ export default function SupportForm() {
 								</Grid>
 								<Grid item>
 									<FormControl fullWidth>
-										<FormLabel htmlFor="issue" sx={labelStyle}>
-											Describe Your Issue
+										<FormLabel htmlFor="title" sx={labelStyle}>
+											Issue Title
+										</FormLabel>
+										<Field
+											as={TextField}
+											id="title"
+											name="title"
+											type="textarea"
+											error={errors.title && touched.title}
+											helperText={errors.title && touched.title && errors.title}
+										/>
+									</FormControl>
+								</Grid>
+								<Grid item>
+									<FormControl fullWidth>
+										<FormLabel htmlFor="description" sx={labelStyle}>
+											Describe Your Issue In Detail
 										</FormLabel>
 										<Field
 											as={TextField}
 											multiline
 											rows={2}
-											id="issue"
-											name="issue"
+											id="description"
+											name="description"
 											type="textarea"
-											error={errors.issue && touched.issue}
-											helperText={errors.issue && touched.issue && errors.issue}
+											error={errors.description && touched.description}
+											helperText={
+												errors.description &&
+												touched.description &&
+												errors.description
+											}
 										/>
 									</FormControl>
 								</Grid>
 								<Grid item>
 									<FormLabel htmlFor="urgency" sx={labelStyle}>
-										Problem Urgency
+										Issue Urgency
 									</FormLabel>
 									<Autocomplete
 										disablePortal
@@ -165,11 +196,12 @@ export default function SupportForm() {
 										multiple
 										id="tags"
 										value={values.tags}
+										loading={skills.isLoading}
 										onChange={(_, value) =>
 											setFieldValue("tags", value || null)
 										}
 										onBlur={handleBlur}
-										options={tags}
+										options={skills.data ? skills.data : []}
 										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
 											<TextField

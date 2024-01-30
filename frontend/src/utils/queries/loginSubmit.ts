@@ -15,6 +15,5 @@ export default async function loginSubmit(
 		if (res.status === 401) throw new Error("Incorrect Credentials")
 		throw new Error(`An unexpected error occured: ${res.status}`)
 	}
-
 	return res
 }

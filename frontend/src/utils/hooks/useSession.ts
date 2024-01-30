@@ -1,12 +1,12 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query"
 
 interface Session extends Response {
+	id: string
 	email: string
-	isEmailConfirmed: boolean
 }
 
 async function getSession(): Promise<Response | null> {
-	const res = await fetch(`${import.meta.env.VITE_API}/manage/info`, {
+	const res = await fetch(`${import.meta.env.VITE_API}/session`, {
 		headers: {
 			"Content-Type": "application/json",
 		},
@@ -22,7 +22,7 @@ async function getSession(): Promise<Response | null> {
 }
 
 export default function useSession(): UseQueryResult<Session | null, Error> {
-	const session = useQuery({
+	const session: UseQueryResult<Session | null, Error> = useQuery({
 		queryKey: ["session"],
 		queryFn: getSession,
 	})

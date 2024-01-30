@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using techconnect.Models;
 
 namespace techconnect.Controllers
 {
@@ -8,9 +9,9 @@ namespace techconnect.Controllers
     [ApiController]
     public class LogoutController : ControllerBase
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public LogoutController(SignInManager<IdentityUser> signInManager)
+        public LogoutController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
         }

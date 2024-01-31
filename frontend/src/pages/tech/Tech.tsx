@@ -6,6 +6,16 @@ import { useEffect } from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
 import Error from "../../components/Error"
+import TicketTable from "../../components/TicketTable"
+import { useQuery } from "@tanstack/react-query"
+import getTickets from "../../utils/queries/getTickets"
+
+export interface Ticket {
+	id: number
+	clientName: string
+	title: string
+	urgency: string
+}
 
 export default function Tech() {
 	const session = useSession()
@@ -17,9 +27,15 @@ export default function Tech() {
 		}
 	}, [session])
 
+	const tickets = useQuery({
+		queryKey: ["getTickets"],
+		enabled: session.data?.id != undefined, // only query when the id is defined
+		queryFn: () => getTickets(session.data?.id),
+	})
+
 	return (
 		<Box>
-			{session.isPending && (
+			{session.isPending || tickets.isLoading ? (
 				<Grid
 					container
 					justifyContent="center"
@@ -28,30 +44,34 @@ export default function Tech() {
 				>
 					<CircularProgress color="primary" size={80} />
 				</Grid>
-			)}
-			{session.isError && <Error />}
-			{session.isSuccess && (
-				<>
-					<Typography
-						component="h1"
-						variant="h3"
-						paddingTop={5}
-						align="center"
-						color="text.primary"
-						fontWeight="bold"
-						gutterBottom
-					>
-						Technician
-					</Typography>
-					<Typography
-						variant="h5"
-						align="center"
-						color="text.secondary"
-						paragraph
-					>
-						Welcome {session.data?.email}
-					</Typography>
-				</>
+			) : session.isError || tickets.isError ? (
+				<Error />
+			) : (
+				session.isSuccess &&
+				tickets.isSuccess && (
+					<>
+						<Typography
+							component="h1"
+							variant="h3"
+							paddingTop={5}
+							align="center"
+							color="text.primary"
+							fontWeight="bold"
+							gutterBottom
+						>
+							Current Tickets
+						</Typography>
+						<Typography
+							variant="h5"
+							align="center"
+							color="text.secondary"
+							paragraph
+						>
+							Welcome {session.data?.email}
+						</Typography>
+						<TicketTable tickets={tickets.data} />
+					</>
+				)
 			)}
 		</Box>
 	)

@@ -11,7 +11,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 const darkTheme = createTheme({
 	palette: {
-		mode: "dark",
+		mode: "light",
 	},
 })
 

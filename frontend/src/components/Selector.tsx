@@ -36,7 +36,7 @@ export default function Selector() {
 			</Grid>
 			<Grid item>
 				<Card sx={cardSx}>
-					<Link to="/tech" replace>
+					<Link to="/tech">
 						<CardMedia
 							component={"img"}
 							src="/img/sunset.jpg"
@@ -52,7 +52,7 @@ export default function Selector() {
 			</Grid>
 			<Grid item>
 				<Card sx={cardSx}>
-					<Link to="/manager" replace>
+					<Link to="/manager">
 						<CardMedia
 							component={"img"}
 							src="/img/sunset.jpg"

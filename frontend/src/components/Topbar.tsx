@@ -8,7 +8,7 @@ import LogoutButton from "./LogoutButton"
 export default function Topbar() {
 	return (
 		<Box>
-			<AppBar position="static">
+			<AppBar position="static" sx={{ zIndex: 1 }}>
 				<Toolbar sx={{ justifyContent: "space-between" }}>
 					<Link to="/">
 						<Typography variant="h5" component="div" fontWeight="bold">

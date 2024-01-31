@@ -34,7 +34,10 @@ const SupportSchema = Yup.object().shape({
 		.max(25, "Name is too long")
 		.matches(/^[a-zA-Z]+$/, "Name can only contain letters"),
 	email: Yup.string().required("Required").email("Invalid email"),
-	title: Yup.string().required("Required").min(5, "Subject is too short"),
+	title: Yup.string()
+		.required("Required")
+		.min(5, "Title is too short")
+		.max(55, "Title is too long"),
 	description: Yup.string()
 		.required("Required")
 		.min(10, "Description is too short"),

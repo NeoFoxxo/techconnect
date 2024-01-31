@@ -15,8 +15,17 @@ namespace techconnect.Repository
 
         public ICollection<TicketDTO> GetTickets(string techId)
         {
+            var urgencyLevels = new Dictionary<string, int>
+            {
+                { "Critical", 1 },
+                { "Normal", 2 },
+                { "Low", 3 }
+            };
+
             return _context.Tickets
                 .Where(t => t.TechId == techId)
+                .AsEnumerable()
+                .OrderBy(t => urgencyLevels[t.Urgency]) // Sort by Urgency with Critical at the top
                 .Select(t => new TicketDTO
                 {
                     Id = t.Id,

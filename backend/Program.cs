@@ -36,8 +36,6 @@ var app = builder.Build();
 
 app.UseCors();
 
-app.MapIdentityApi<AppUser>();
-
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();

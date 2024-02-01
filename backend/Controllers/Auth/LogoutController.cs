@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using techconnect.Models;
 
-namespace techconnect.Controllers
+namespace techconnect.Controllers.Auth
 {
     [Route("[controller]")]
     [ApiController]

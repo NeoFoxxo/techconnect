@@ -22,10 +22,14 @@ namespace techconnect.Controllers
         {
             var cookie = HttpContext.User;
             var session = await _userManager.GetUserAsync(cookie);
+            var roles = await _userManager.GetRolesAsync(session);
+            string role = roles.FirstOrDefault("Technican");
             return Ok(new
             {
                 session.Id,
                 session.Email,
+                session.FirstName,
+                role
             });
         }
     }

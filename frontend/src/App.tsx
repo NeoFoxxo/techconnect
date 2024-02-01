@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline"
 import TechLogin from "./pages/tech/TechLogin"
 import NotFound from "./pages/notfound/NotFound"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import Ticket from "./pages/tech/Ticket"
 
 const darkTheme = createTheme({
 	palette: {
@@ -28,6 +29,7 @@ export default function App() {
 				/>
 				<Route path="/tech" element={<Tech />} />
 				<Route path="/tech/login" element={<TechLogin />} />
+				<Route path="/tech/ticket/:ticketId" element={<Ticket />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 			<ReactQueryDevtools initialIsOpen={false} />

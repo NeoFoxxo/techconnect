@@ -1,14 +1,10 @@
-import Table from "@mui/material/Table"
-import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
 import { SxProps, Theme } from "@mui/material/styles"
 import { Ticket } from "../pages/tech/Tech"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
+import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import { useNavigate } from "react-router-dom"
 
 function getRowColor(urgency: string): SxProps<Theme> | undefined {
 	if (urgency === "Critical") {
@@ -20,11 +16,37 @@ function getRowColor(urgency: string): SxProps<Theme> | undefined {
 	}
 }
 
+const columns: GridColDef[] = [
+	{ field: "id", headerName: "Ticket ID", flex: 1, sortable: false },
+	{ field: "clientName", headerName: "Name", flex: 1, sortable: false },
+	{
+		field: "title",
+		headerName: "Subject",
+		flex: 2,
+		sortable: false,
+	},
+	{
+		field: "urgency",
+		headerName: "Urgency",
+		flex: 1,
+		sortable: false,
+		renderCell: (params) => (
+			<TableCell sx={getRowColor(params.value)}>{params.value}</TableCell>
+		),
+	},
+]
+
 export default function TicketTable({
 	tickets,
 }: {
 	tickets: readonly Ticket[]
 }) {
+	const navigate = useNavigate()
+
+	function goToTicket(ticketId: number) {
+		navigate(`/tech/ticket/${ticketId}`)
+	}
+
 	return (
 		<main>
 			{!tickets[0] && (
@@ -41,43 +63,21 @@ export default function TicketTable({
 				</Box>
 			)}
 			{tickets[0] && (
-				<TableContainer
-					component={Paper}
-					sx={{ maxWidth: 900, marginX: "auto", marginTop: 5 }}
-				>
-					<Table aria-label="ticket table">
-						<TableHead>
-							<TableRow>
-								<TableCell>Ticket ID</TableCell>
-								<TableCell>Name</TableCell>
-								<TableCell>Subject</TableCell>
-								<TableCell>Urgency</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{tickets.map((ticket) => (
-								<TableRow key={ticket.id}>
-									<TableCell component="th" scope="row">
-										{ticket.id}
-									</TableCell>
-									<TableCell component="th" scope="row">
-										{ticket.clientName}
-									</TableCell>
-									<TableCell component="th" scope="row">
-										{ticket.title}
-									</TableCell>
-									<TableCell
-										component="th"
-										scope="row"
-										sx={getRowColor(ticket.urgency)}
-									>
-										{ticket.urgency}
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+				<Box sx={{ maxWidth: 930, marginX: "auto", marginTop: 5 }}>
+					<DataGrid
+						rows={tickets}
+						columns={columns}
+						initialState={{
+							pagination: {
+								paginationModel: {
+									pageSize: 5,
+								},
+							},
+						}}
+						pageSizeOptions={[5]}
+						onRowClick={(params) => goToTicket(params.id as number)}
+					/>
+				</Box>
 			)}
 		</main>
 	)

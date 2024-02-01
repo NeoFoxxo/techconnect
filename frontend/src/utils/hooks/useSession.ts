@@ -3,6 +3,8 @@ import { UseQueryResult, useQuery } from "@tanstack/react-query"
 interface Session extends Response {
 	id: string
 	email: string
+	firstName: string
+	role: string | undefined
 }
 
 async function getSession(): Promise<Response | null> {

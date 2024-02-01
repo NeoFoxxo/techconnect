@@ -2,9 +2,9 @@
 
 namespace techconnect.Models
 {
-    // AppUser is the technician 
     public class AppUser : IdentityUser
     {
+        public string FirstName { get; set; }
         public ICollection<Skill> Skills { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
     }

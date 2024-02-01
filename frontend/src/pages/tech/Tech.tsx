@@ -67,7 +67,7 @@ export default function Tech() {
 							color="text.secondary"
 							paragraph
 						>
-							Welcome {session.data?.email}
+							Welcome {session.data?.firstName} the {session.data?.role}
 						</Typography>
 						<TicketTable tickets={tickets.data} />
 					</>

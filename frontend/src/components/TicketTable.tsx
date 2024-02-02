@@ -31,7 +31,9 @@ const columns: GridColDef[] = [
 		flex: 1,
 		sortable: false,
 		renderCell: (params) => (
-			<TableCell sx={getRowColor(params.value)}>{params.value}</TableCell>
+			<TableCell sx={getRowColor(params.value)} component={"div"}>
+				{params.value}
+			</TableCell>
 		),
 	},
 ]

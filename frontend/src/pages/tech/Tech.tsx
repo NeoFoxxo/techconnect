@@ -35,7 +35,7 @@ export default function Tech() {
 
 	return (
 		<Box>
-			{session.isPending || tickets.isLoading ? (
+			{tickets.isPending ? (
 				<Grid
 					container
 					justifyContent="center"
@@ -47,7 +47,6 @@ export default function Tech() {
 			) : session.isError || tickets.isError ? (
 				<Error />
 			) : (
-				session.isSuccess &&
 				tickets.isSuccess && (
 					<>
 						<Typography

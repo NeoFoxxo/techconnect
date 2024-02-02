@@ -2,7 +2,7 @@ import { TicketInfo } from "../../pages/tech/Ticket"
 
 export default async function getTicketInfo(
 	ticketId: string | undefined
-): Promise<readonly TicketInfo[] | null> {
+): Promise<TicketInfo[] | null> {
 	const res = await fetch(
 		`${import.meta.env.VITE_API}/ticket/info/${ticketId}`,
 		{

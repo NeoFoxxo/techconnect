@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import LoginForm from "../../components/LoginForm"
 
-export default function TechLogin() {
+export default function ManagerLogin() {
 	return (
 		<Box>
 			<Typography
@@ -14,12 +14,12 @@ export default function TechLogin() {
 				fontWeight="bold"
 				gutterBottom
 			>
-				Technician Login
+				Manager Login
 			</Typography>
 			<Typography variant="h5" align="center" color="text.secondary" paragraph>
-				Login to your technician account
+				Login to your Manager account to create and modify Technicians
 			</Typography>
-			<LoginForm isManager={false} />
+			<LoginForm isManager={true} />
 		</Box>
 	)
 }

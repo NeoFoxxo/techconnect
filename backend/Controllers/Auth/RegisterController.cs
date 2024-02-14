@@ -19,14 +19,14 @@ namespace techconnect.Controllers.Auth
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Register(Register body)
         {
-            var user = new AppUser()
+            var user = new AppUser
             {
                 FirstName = body.FirstName,
                 Email = body.Email,
                 UserName = body.Email,
-                PasswordHash = body.Password,
+                PasswordHash = body.Password
             };
-            var register = await _userManager.CreateAsync(user, user.PasswordHash!);
+            var register = await _userManager.CreateAsync(user, user.PasswordHash);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

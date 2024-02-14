@@ -20,6 +20,10 @@ export interface LoginFormData {
 	password: string
 }
 
+interface LoginProps {
+	isManager: boolean
+}
+
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().required("Required").email("Invalid email"),
 	password: Yup.string().required("Required").min(5, "Password is too short"),
@@ -27,13 +31,19 @@ const LoginSchema = Yup.object().shape({
 
 const labelStyle = { paddingBottom: 2 }
 
-export default function LoginForm() {
+export default function LoginForm({ isManager }: LoginProps) {
+	let redirectLink: string = "/tech"
+
+	if (isManager) {
+		redirectLink = "/manager"
+	}
+
 	const isMobile = useIsMobile()
 
 	const login = useMutation({
 		mutationKey: ["loginSubmit"],
-		mutationFn: (formData: LoginFormData) => loginSubmit(formData),
-		onSuccess: () => (window.location.href = "/tech"),
+		mutationFn: (formData: LoginFormData) => loginSubmit(formData, isManager),
+		onSuccess: () => (window.location.href = redirectLink),
 	})
 
 	return (

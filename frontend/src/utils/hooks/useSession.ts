@@ -4,7 +4,7 @@ interface Session extends Response {
 	id: string
 	email: string
 	firstName: string
-	role: string | undefined
+	role: string
 }
 
 async function getSession(): Promise<Response | null> {

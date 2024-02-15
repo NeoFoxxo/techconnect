@@ -232,16 +232,11 @@ namespace techconnect.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Skills");
                 });
@@ -266,10 +261,6 @@ namespace techconnect.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Skills")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TechId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -289,7 +280,7 @@ namespace techconnect.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("techconnect.Models.UserSkill", b =>
+            modelBuilder.Entity("techconnect.Models.TicketSkill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,9 +288,28 @@ namespace techconnect.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SkillId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketSkills");
+                });
+
+            modelBuilder.Entity("techconnect.Models.UserSkill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -317,7 +327,7 @@ namespace techconnect.Migrations
 
                     b.HasIndex("TechId");
 
-                    b.ToTable("UserSkill");
+                    b.ToTable("UserSkills");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -371,13 +381,6 @@ namespace techconnect.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("techconnect.Models.Skill", b =>
-                {
-                    b.HasOne("techconnect.Models.AppUser", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("techconnect.Models.Ticket", b =>
                 {
                     b.HasOne("techconnect.Models.AppUser", "Tech")
@@ -389,10 +392,29 @@ namespace techconnect.Migrations
                     b.Navigation("Tech");
                 });
 
+            modelBuilder.Entity("techconnect.Models.TicketSkill", b =>
+                {
+                    b.HasOne("techconnect.Models.Skill", "Skill")
+                        .WithMany("TicketSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("techconnect.Models.Ticket", "Ticket")
+                        .WithMany("TicketSkills")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Skill");
+
+                    b.Navigation("Ticket");
+                });
+
             modelBuilder.Entity("techconnect.Models.UserSkill", b =>
                 {
                     b.HasOne("techconnect.Models.Skill", "Skill")
-                        .WithMany()
+                        .WithMany("UserSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -410,11 +432,21 @@ namespace techconnect.Migrations
 
             modelBuilder.Entity("techconnect.Models.AppUser", b =>
                 {
-                    b.Navigation("Skills");
-
                     b.Navigation("Tickets");
 
                     b.Navigation("UserSkills");
+                });
+
+            modelBuilder.Entity("techconnect.Models.Skill", b =>
+                {
+                    b.Navigation("TicketSkills");
+
+                    b.Navigation("UserSkills");
+                });
+
+            modelBuilder.Entity("techconnect.Models.Ticket", b =>
+                {
+                    b.Navigation("TicketSkills");
                 });
 #pragma warning restore 612, 618
         }

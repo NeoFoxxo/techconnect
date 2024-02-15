@@ -5,7 +5,7 @@
 namespace techconnect.Migrations
 {
     /// <inheritdoc />
-    public partial class UserSkills : Migration
+    public partial class UserSkillAndTicketSkill : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,6 +19,10 @@ namespace techconnect.Migrations
                 table: "Skills");
 
             migrationBuilder.DropColumn(
+                name: "Skills",
+                table: "Tickets");
+
+            migrationBuilder.DropColumn(
                 name: "Rating",
                 table: "Skills");
 
@@ -26,34 +30,53 @@ namespace techconnect.Migrations
                 name: "TechId",
                 table: "Skills");
 
-            migrationBuilder.AddColumn<string>(
-                name: "AppUserId",
-                table: "Skills",
-                type: "nvarchar(450)",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "TicketSkills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TicketId = table.Column<int>(type: "int", nullable: false),
+                    SkillId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketSkills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketSkills_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TicketSkills_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
-                name: "UserSkill",
+                name: "UserSkills",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SkillId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     TechId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserSkill", x => x.Id);
+                    table.PrimaryKey("PK_UserSkills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserSkill_AspNetUsers_TechId",
+                        name: "FK_UserSkills_AspNetUsers_TechId",
                         column: x => x.TechId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserSkill_Skills_SkillId",
+                        name: "FK_UserSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
@@ -61,45 +84,41 @@ namespace techconnect.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skills_AppUserId",
-                table: "Skills",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSkill_SkillId",
-                table: "UserSkill",
+                name: "IX_TicketSkills_SkillId",
+                table: "TicketSkills",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserSkill_TechId",
-                table: "UserSkill",
-                column: "TechId");
+                name: "IX_TicketSkills_TicketId",
+                table: "TicketSkills",
+                column: "TicketId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Skills_AspNetUsers_AppUserId",
-                table: "Skills",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSkills_SkillId",
+                table: "UserSkills",
+                column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSkills_TechId",
+                table: "UserSkills",
+                column: "TechId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Skills_AspNetUsers_AppUserId",
-                table: "Skills");
+            migrationBuilder.DropTable(
+                name: "TicketSkills");
 
             migrationBuilder.DropTable(
-                name: "UserSkill");
+                name: "UserSkills");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Skills_AppUserId",
-                table: "Skills");
-
-            migrationBuilder.DropColumn(
-                name: "AppUserId",
-                table: "Skills");
+            migrationBuilder.AddColumn<string>(
+                name: "Skills",
+                table: "Tickets",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AddColumn<int>(
                 name: "Rating",

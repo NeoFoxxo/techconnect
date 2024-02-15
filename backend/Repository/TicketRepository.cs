@@ -1,7 +1,7 @@
-﻿using techconnect.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using techconnect.Data;
 using techconnect.DTO;
 using techconnect.Interfaces;
-using techconnect.Models;
 
 namespace techconnect.Repository
 {
@@ -31,13 +31,26 @@ namespace techconnect.Repository
                     Id = t.Id,
                     Title = t.Title,
                     ClientName = t.ClientName,
-                    Urgency = t.Urgency,
+                    Urgency = t.Urgency
                 })
                 .ToList();
         }
-        public Ticket GetTicketInfo(int ticketId)
+        public TicketInfoDTO? GetTicketInfo(int ticketId)
         {
-            return _context.Tickets.Where(t => t.Id == ticketId).FirstOrDefault();
+            return _context.Tickets
+                .Include(t => t.TicketSkills)
+                .Where(t => t.Id == ticketId)
+                .Select(t => new TicketInfoDTO
+                {
+                    Title = t.Title,
+                    ClientName = t.ClientName,
+                    ClientEmail = t.ClientEmail,
+                    Description = t.Description,
+                    Urgency = t.Urgency,
+                    Skills = t.TicketSkills.Select(ts => ts.Skill.Name).ToList(),
+                    TechId = t.TechId
+                })
+                .FirstOrDefault();
         }
     }
 }

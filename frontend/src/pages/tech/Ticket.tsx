@@ -11,12 +11,13 @@ import TicketInfo from "../../components/TicketInfo"
 import Divider from "@mui/material/Divider"
 
 export interface TicketInfo {
-	id: number
 	clientName: string
+	clientEmail: string
 	title: string
 	description: string
 	urgency: string
 	skills: string[]
+	techId: string
 }
 
 export default function Ticket() {

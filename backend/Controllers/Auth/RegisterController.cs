@@ -40,10 +40,8 @@ namespace techconnect.Controllers.Auth
                 return Ok(new { message = "Successfully created Manager " + user.FirstName });
             }
 
-            if (register.Succeeded)
-                return Ok(new { message = "Successfully created Technician " + user.FirstName });
-
-            return BadRequest(new { message = "An Unexpected Error Occured" });
+            await _userManager.AddToRoleAsync(user, "Technician");
+            return Ok(new { message = "Successfully created Technician " + user.FirstName });
         }
     }
 }

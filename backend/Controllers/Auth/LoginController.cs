@@ -33,7 +33,7 @@ namespace techconnect.Controllers.Auth
             
             if (!signIn.Succeeded)
                 return Unauthorized(new { message = "Incorrect Credentials" });
-
+            
             if (manager)
             {
                 var user = await _userManager.GetUserAsync(User);

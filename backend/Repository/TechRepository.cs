@@ -18,20 +18,6 @@ namespace techconnect.Repository
             _userManager = userManager;
         }
 
-        public ICollection<TechSkillsDTO> GetTechSkills(string techId)
-        {
-            return _context.UserSkills
-                .Include(us => us.Skill)
-                .Where(us => us.TechId == techId)
-                .Select(us => new TechSkillsDTO
-                {
-                    Rating = us.Rating,
-                    Name = us.Skill.Name,
-                    SkillId = us.SkillId
-                })
-                .ToList();
-        }
-
         public void AddTechSkills(ICollection<TechSkillsDTO> skills, string techId)
         {
             foreach (TechSkillsDTO skill in skills)
@@ -59,12 +45,35 @@ namespace techconnect.Repository
                 {
                     Id = tech.Id,
                     FirstName = tech.FirstName,
-                    Email = tech.Email,
-                    Role = "Technician"
+                    Email = tech.Email
                 };
                 techList.Add(singleTech);
             }
             return techList;
+        }
+        
+        public TechInfoDTO GetTechInfo(string techId)
+        {
+            var techSkills = _context.UserSkills
+                .Include(us => us.Skill)
+                .Where(us => us.TechId == techId)
+                .Select(us => new TechSkillsDTO
+                {
+                    Rating = us.Rating,
+                    Name = us.Skill.Name,
+                    SkillId = us.SkillId
+                })
+                .ToList();
+            
+            return _context.Users
+                .Where(u => u.Id == techId)
+                .Select(ti => new TechInfoDTO
+                {
+                    Id = techId,
+                    FirstName = ti.FirstName,
+                    Email = ti.Email,
+                    Skills = techSkills
+                }).FirstOrDefault();
         }
     }
 }

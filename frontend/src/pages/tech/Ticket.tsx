@@ -7,23 +7,20 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Grid from "@mui/material/Grid"
 import useSession from "../../utils/hooks/useSession"
 import { useEffect } from "react"
-import TicketInfo from "../../components/TicketInfo"
 import Divider from "@mui/material/Divider"
-
-export interface TicketInfo {
-	clientName: string
-	clientEmail: string
-	title: string
-	description: string
-	urgency: string
-	skills: string[]
-	techId: string
-}
+import { TicketInfo } from "../../models/TicketInfo"
+import TicketDetails from "../../components/TicketDetails"
 
 export default function Ticket() {
 	const { ticketId } = useParams()
 	const session = useSession()
 	const navigate = useNavigate()
+
+	const ticket: UseQueryResult<TicketInfo> = useQuery({
+		queryKey: ["getTicketInfo", ticketId],
+		queryFn: () => getTicketInfo(ticketId),
+		enabled: ticketId != undefined && session.data?.id != undefined,
+	})
 
 	useEffect(() => {
 		if (session?.data === null) {
@@ -31,11 +28,12 @@ export default function Ticket() {
 		}
 	}, [session])
 
-	const ticket: UseQueryResult<TicketInfo> = useQuery({
-		queryKey: ["getTicketInfo", ticketId],
-		queryFn: () => getTicketInfo(ticketId),
-		enabled: ticketId != undefined,
-	})
+	// prevents techs from viewing tickets not assigned to them (messy i know)
+	if (ticket.isSuccess) {
+		if (ticket.data?.techId != session?.data?.id) {
+			navigate("/tech")
+		}
+	}
 
 	return (
 		<Box paddingX={5}>
@@ -79,7 +77,7 @@ export default function Ticket() {
 						>
 							Current Ticket
 						</Typography>
-						<TicketInfo ticket={ticket.data} />
+						<TicketDetails ticket={ticket.data} />
 						<Typography
 							variant="h5"
 							padding={3}
@@ -89,7 +87,7 @@ export default function Ticket() {
 						>
 							Voice Chat
 						</Typography>
-						<TicketInfo ticket={ticket.data} />
+						<TicketDetails ticket={ticket.data} />
 					</Grid>
 				</Grid>
 			)}

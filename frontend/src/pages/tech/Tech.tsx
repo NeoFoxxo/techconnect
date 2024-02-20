@@ -10,13 +10,6 @@ import TicketTable from "../../components/TicketTable"
 import { useQuery } from "@tanstack/react-query"
 import getTickets from "../../utils/queries/getTickets"
 
-export interface Ticket {
-	id: number
-	clientName: string
-	title: string
-	urgency: string
-}
-
 export default function Tech() {
 	const session = useSession()
 	const navigate = useNavigate()

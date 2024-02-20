@@ -1,11 +1,5 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query"
-
-interface Session extends Response {
-	id: string
-	email: string
-	firstName: string
-	role: string
-}
+import { Session } from "../../models/Session"
 
 async function getSession(): Promise<Response | null> {
 	const res = await fetch(`${import.meta.env.VITE_API}/session`, {

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import { TicketInfo } from "../pages/tech/Ticket"
+import { TicketInfo } from "../models/TicketInfo"
 import Divider from "@mui/material/Divider"
 import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"
@@ -10,7 +10,7 @@ interface TicketInfoProps {
 	ticket: TicketInfo
 }
 
-export default function TicketInfo({ ticket }: TicketInfoProps) {
+export default function TicketDetails({ ticket }: TicketInfoProps) {
 	return (
 		<Box
 			width={400}

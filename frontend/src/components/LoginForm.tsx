@@ -48,7 +48,7 @@ export default function LoginForm({ isManager }: LoginProps) {
 
 	return (
 		<Container sx={{ width: isMobile ? "80vh" : "auto", padding: 5 }}>
-			<Card sx={{ padding: 3, border: "2px solid #eeeeee" }}>
+			<Card sx={{ padding: 3, border: "2px solid #eeee" }}>
 				<Formik
 					initialValues={{ email: "", password: "" }}
 					validationSchema={LoginSchema}

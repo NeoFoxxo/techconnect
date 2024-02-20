@@ -16,19 +16,6 @@ namespace techconnect.Controllers
         {
             _techRepository = techRepository;
         }
-        
-        [HttpGet("skills/{techId}")]
-        [Authorize]
-        public IActionResult GetTechSkills(string techId)
-        {
-            var techSkills = _techRepository.GetTechSkills(techId);
-        
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            if (techSkills.Count == 0)
-                return NotFound(new { message = "No Skills Found With The Given TechID" });
-            return Ok(techSkills);
-        }
 
         [HttpPost("skills/{techId}")]
         [Authorize(Roles = "Manager")]
@@ -65,6 +52,19 @@ namespace techconnect.Controllers
                 return StatusCode(500,
                     new { message = "An unexpected error occured when obtaining technicians: " + ex.Message });
             }
+        }
+        
+        [HttpGet("info/{techId}")]
+        [Authorize(Roles = "Manager")]
+        public IActionResult GetTechInfo(string techId)
+        {
+            var techInfo = _techRepository.GetTechInfo(techId);
+        
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (techInfo == null)
+                return NotFound(new { message = "No Tech Found With The Given TechID" });
+            return Ok(techInfo);
         }
         
         // TODO: Edit Technician endpoint (name, email)

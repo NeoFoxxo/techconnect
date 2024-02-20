@@ -1,6 +1,6 @@
 import TableCell from "@mui/material/TableCell"
 import { SxProps, Theme } from "@mui/material/styles"
-import { Ticket } from "../pages/tech/Tech"
+import { Ticket } from "../models/Ticket"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 import { DataGrid, GridColDef } from "@mui/x-data-grid"

@@ -5,31 +5,12 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import TechTable from "../../components/TechTable"
-import getTechs from "../../utils/queries/getTechs"
+import getTechnicans from "../../utils/queries/getTechnicans"
 import { CircularProgress } from "@mui/material"
 import { Grid } from "@mui/material"
 import Error from "../../components/Error"
 
-export default function Manager() {
-	const session = useSession()
-	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (session?.data === null) {
-			navigate("/manager/login")
-		}
-	}, [session])
-
-	const techs = useQuery({
-		queryKey: ["getTechnicians"],
-		enabled: session.data?.id != undefined, // only query when the id is defined
-		queryFn: () => getTechs(),
-	})
-
-	if (techs.error?.message === "403") {
-		navigate("/manager/login")
-	}
-
+export default function TechDetails() {
 	return (
 		<Box>
 			{techs.isPending ? (

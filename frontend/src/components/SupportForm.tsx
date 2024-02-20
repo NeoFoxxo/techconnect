@@ -17,15 +17,7 @@ import supportSubmit from "../utils/queries/supportSubmit"
 import useIsMobile from "../utils/hooks/useIsMobile"
 import { useQuery } from "@tanstack/react-query"
 import getSkills from "../utils/queries/getSkills"
-
-export interface SupportFormData {
-	name: string
-	email: string
-	title: string
-	description: string
-	urgency: string
-	tags: string[]
-}
+import { SupportFormData } from "../models/SupportFormData"
 
 const SupportSchema = Yup.object().shape({
 	name: Yup.string()

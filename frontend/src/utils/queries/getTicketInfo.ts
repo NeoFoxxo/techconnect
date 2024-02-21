@@ -1,4 +1,4 @@
-import { TicketInfo } from "../../pages/tech/Ticket"
+import { TicketInfo } from "../../models/TicketInfo"
 
 export default async function getTicketInfo(
 	ticketId: string | undefined

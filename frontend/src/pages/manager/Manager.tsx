@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import useSession from "../../utils/hooks/useSession"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import TechTable from "../../components/TechTable"
 import getTechs from "../../utils/queries/getTechs"
-import { CircularProgress } from "@mui/material"
+import { Button, CircularProgress } from "@mui/material"
 import { Grid } from "@mui/material"
 import Error from "../../components/Error"
 
@@ -45,7 +45,7 @@ export default function Manager() {
 				<Error />
 			) : (
 				techs.isSuccess && (
-					<>
+					<Grid>
 						<Typography
 							component="h1"
 							variant="h3"
@@ -63,11 +63,17 @@ export default function Manager() {
 							color="text.secondary"
 							paragraph
 						>
-							Select a technician below to edit their details or view their
-							profile
+							Select a technician below to view or edit their details
 						</Typography>
+						<Grid textAlign="center">
+							<Link to="createtech">
+								<Button variant="contained" href="/">
+									Create New Technician
+								</Button>
+							</Link>
+						</Grid>
 						<TechTable technicians={techs.data} />
-					</>
+					</Grid>
 				)
 			)}
 		</Box>

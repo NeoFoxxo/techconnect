@@ -1,4 +1,4 @@
-import { Ticket } from "../../pages/tech/Tech"
+import { Ticket } from "../../models/Ticket"
 
 export default async function getTickets(
 	userId: string | undefined

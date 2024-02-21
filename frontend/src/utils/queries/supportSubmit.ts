@@ -1,4 +1,5 @@
-import { SupportFormData } from "../../components/SupportForm"
+import { SupportFormData } from "../../models/SupportFormData"
+
 export default async function supportSubmit(formData: SupportFormData) {
 	try {
 		const res = await fetch("/api/support", {

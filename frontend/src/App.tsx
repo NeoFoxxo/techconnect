@@ -11,6 +11,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Ticket from "./pages/tech/Ticket"
 import ManagerLogin from "./pages/manager/ManagerLogin"
 import Manager from "./pages/manager/Manager"
+import CreateTechnician from "./pages/manager/CreateTechnician"
 
 const darkTheme = createTheme({
 	palette: {
@@ -34,6 +35,7 @@ export default function App() {
 				<Route path="/tech/ticket/:ticketId" element={<Ticket />} />
 				<Route path="/manager" element={<Manager />} />
 				<Route path="/manager/login" element={<ManagerLogin />} />
+				<Route path="/manager/createtech" element={<CreateTechnician />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 			<ReactQueryDevtools initialIsOpen={false} />

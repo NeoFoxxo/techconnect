@@ -68,8 +68,7 @@ export default function CreateTechForm() {
 					initialValues={initialValues}
 					validationSchema={TechSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						console.log(values)
-						// createTech.mutate(values)
+						createTech.mutate(values)
 						setSubmitting(false)
 					}}
 				>
@@ -191,9 +190,7 @@ export default function CreateTechForm() {
 											<Slider
 												onChange={(_, value) => {
 													let ratings = [...values.skillRating]
-
-													ratings[index] = value || 1
-
+													ratings[index] = (value as number) || 1
 													setFieldValue("skillRating", ratings)
 												}}
 												id={`${skill}Rating`}

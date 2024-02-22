@@ -22,9 +22,13 @@ namespace techconnect.Repository
         {
             foreach (TechSkillsDTO skill in skills)
             {
+                var skillID = _context.Skills
+                    .Where(s => s.Name == skill.Name)
+                    .Select(s => s.Id)
+                    .FirstOrDefault();
                 var newUserSkill = new UserSkill
                 {
-                    SkillId = skill.SkillId,
+                    SkillId = skillID,
                     Rating = skill.Rating,
                     TechId = techId
                 };
@@ -60,8 +64,7 @@ namespace techconnect.Repository
                 .Select(us => new TechSkillsDTO
                 {
                     Rating = us.Rating,
-                    Name = us.Skill.Name,
-                    SkillId = us.SkillId
+                    Name = us.Skill.Name
                 })
                 .ToList();
             

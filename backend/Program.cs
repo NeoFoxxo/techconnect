@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using techconnect.Data;
+using techconnect.Hubs;
 using techconnect.Interfaces;
 using techconnect.Models;
 using techconnect.Repository;
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ITechRepository, TechRepository>();
@@ -44,5 +46,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

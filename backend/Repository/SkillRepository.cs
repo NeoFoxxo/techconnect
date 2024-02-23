@@ -22,6 +22,15 @@ namespace techconnect.Repository
         
         public void AddSkill(string skillName)
         {
+            var skillExists = _context.Skills
+                .Where(s => s.Name.ToLower() == skillName.ToLower())
+                .FirstOrDefault();
+            
+            if (skillExists != null)
+            {
+                throw new InvalidOperationException("Skill already exists.");
+            }
+
             var newSkill = new Skill
             {
                 Name = skillName

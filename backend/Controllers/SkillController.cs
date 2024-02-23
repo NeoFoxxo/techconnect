@@ -27,16 +27,17 @@ namespace techconnect.Controllers
         
         public class AddSkillModel
         {
-            public string SkillName { get; }
+            public string SkillName { get; set; }
         }
         
         [HttpPost]
         [Authorize(Roles = "Manager")]
-        public IActionResult AddSkill([FromBody] AddSkillModel body)
+        public IActionResult AddSkill(AddSkillModel body)
         {
             
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             try
             {
                 _skillRepository.AddSkill(body.SkillName);
@@ -45,7 +46,7 @@ namespace techconnect.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500,
-                    new { message = "An unexpected error occured when adding skill: " + ex.Message });
+                    new { message = "An error occured when adding skill: " + ex.Message });
             }
         }
     }

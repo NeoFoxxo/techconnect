@@ -12,6 +12,8 @@ import Ticket from "./pages/tech/Ticket"
 import ManagerLogin from "./pages/manager/ManagerLogin"
 import Manager from "./pages/manager/Manager"
 import CreateTechnician from "./pages/manager/CreateTechnician"
+import TechDetails from "./pages/manager/TechDetails"
+import AddSkill from "./pages/manager/AddSkill"
 
 const darkTheme = createTheme({
 	palette: {
@@ -36,6 +38,8 @@ export default function App() {
 				<Route path="/manager" element={<Manager />} />
 				<Route path="/manager/login" element={<ManagerLogin />} />
 				<Route path="/manager/createtech" element={<CreateTechnician />} />
+				<Route path="/manager/techdetails/:techId" element={<TechDetails />} />
+				<Route path="/manager/addskill" element={<AddSkill />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
 			<ReactQueryDevtools initialIsOpen={false} />

@@ -65,12 +65,26 @@ export default function Manager() {
 						>
 							Select a technician below to view or edit their details
 						</Typography>
-						<Grid textAlign="center">
-							<Link to="createtech">
-								<Button variant="contained" href="/">
-									Create New Technician
-								</Button>
-							</Link>
+						<Grid
+							textAlign="center"
+							justifyContent={"center"}
+							spacing={5}
+							container
+						>
+							<Grid item>
+								<Link to="createtech">
+									<Button variant="contained" href="/">
+										Create New Technician
+									</Button>
+								</Link>
+							</Grid>
+							<Grid item>
+								<Link to="addskill">
+									<Button variant="contained" href="/">
+										Add New Skill
+									</Button>
+								</Link>
+							</Grid>
 						</Grid>
 						<TechTable technicians={techs.data} />
 					</Grid>

@@ -23,8 +23,7 @@ namespace techconnect.Repository
         public void AddSkill(string skillName)
         {
             var skillExists = _context.Skills
-                .Where(s => s.Name.ToLower() == skillName.ToLower())
-                .FirstOrDefault();
+                .FirstOrDefault(s => s.Name.ToLower() == skillName.ToLower());
             
             if (skillExists != null)
             {

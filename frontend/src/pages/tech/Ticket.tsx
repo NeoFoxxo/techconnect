@@ -10,6 +10,8 @@ import { useEffect } from "react"
 import Divider from "@mui/material/Divider"
 import { TicketInfo } from "../../models/TicketInfo"
 import TicketDetails from "../../components/TicketDetails"
+import ChatBox from "../../components/ChatBox"
+import useChat from "../../utils/hooks/useChat"
 
 export default function Ticket() {
 	const { ticketId } = useParams()
@@ -21,6 +23,8 @@ export default function Ticket() {
 		queryFn: () => getTicketInfo(ticketId),
 		enabled: ticketId != undefined && session.data?.id != undefined,
 	})
+
+	const { messages, sendMessage } = useChat(session.data?.firstName, ticketId)
 
 	useEffect(() => {
 		if (session?.data === null) {
@@ -36,7 +40,7 @@ export default function Ticket() {
 	}
 
 	return (
-		<Box paddingX={5}>
+		<Box paddingX={5} width={"90%"} marginX="auto">
 			<Typography
 				component="h1"
 				variant="h3"
@@ -66,6 +70,7 @@ export default function Ticket() {
 						>
 							Chat
 						</Typography>
+						<ChatBox messages={messages} sendMessage={sendMessage} />
 					</Grid>
 					<Grid item>
 						<Typography
@@ -76,16 +81,6 @@ export default function Ticket() {
 							fontWeight="bold"
 						>
 							Current Ticket
-						</Typography>
-						<TicketDetails ticket={ticket.data} />
-						<Typography
-							variant="h5"
-							padding={3}
-							align="center"
-							color="text.primary"
-							fontWeight="bold"
-						>
-							Voice Chat
 						</Typography>
 						<TicketDetails ticket={ticket.data} />
 					</Grid>

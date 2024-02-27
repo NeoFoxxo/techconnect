@@ -1,8 +1,8 @@
 export interface SupportFormData {
-	name: string
-	email: string
+	clientName: string
+	clientEmail: string
 	title: string
 	description: string
 	urgency: string
-	tags: string[]
+	skills: string[]
 }

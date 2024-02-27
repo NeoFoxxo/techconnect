@@ -52,14 +52,18 @@ export default function CreateTechForm() {
 
 	const createTech = useMutation({
 		mutationKey: ["createTechnician"],
-		mutationFn: (formData: CreateTechFormData) => createTechSubmit(formData),
+		mutationFn: (formData: CreateTechFormData) =>
+			createTechSubmit(formData, allSkills.data),
 		onSuccess: () => (window.location.href = "/manager"),
 	})
 
-	const skills = useQuery({
+	const allSkills = useQuery({
 		queryKey: ["getSkills"],
 		queryFn: () => getSkills(),
 	})
+
+	// extract skill names
+	const skills = allSkills.data?.map((skill) => skill.name)
 
 	return (
 		<Container sx={{ width: isMobile ? "50%" : "auto", padding: 3 }}>
@@ -144,12 +148,12 @@ export default function CreateTechForm() {
 										multiple
 										id="skills"
 										value={values.skills}
-										loading={skills.isLoading}
+										loading={allSkills.isLoading}
 										onChange={(_, value) =>
 											setFieldValue("skills", value || null)
 										}
 										onBlur={handleBlur}
-										options={skills.data ? skills.data : []}
+										options={skills ? skills : []}
 										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
 											<TextField

@@ -6,5 +6,6 @@ namespace techconnect.Interfaces
     {
         ICollection<TicketDTO> GetTickets(string techId);
         TicketInfoDTO? GetTicketInfo(int ticketId);
+        void AddTicket(TicketInfoDTO ticket);
     }
 }

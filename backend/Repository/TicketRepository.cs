@@ -2,6 +2,7 @@
 using techconnect.Data;
 using techconnect.DTO;
 using techconnect.Interfaces;
+using techconnect.Models;
 
 namespace techconnect.Repository
 {
@@ -51,6 +52,41 @@ namespace techconnect.Repository
                     TechId = t.TechId
                 })
                 .FirstOrDefault();
+        }
+        
+        public void AddTicket(TicketInfoDTO ticket)
+        {
+            // add ticket to db
+            var newTicket = new Ticket
+            {
+                ClientEmail = ticket.ClientEmail,
+                ClientName = ticket.ClientEmail,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                Urgency = ticket.Urgency,
+                TechId = ticket.TechId
+            };
+                
+            _context.Tickets.Add(newTicket);
+            _context.SaveChanges();
+            
+            // then add the skills to the ticket
+            foreach (string skillName in ticket.Skills)
+            {
+                var skillId = _context.Skills
+                    .Where(s => s.Name == skillName)
+                    .Select(s => s.Id)
+                    .FirstOrDefault();
+
+                var newTicketSkill = new TicketSkill
+                {
+                    SkillId = skillId,
+                    Ticket = newTicket
+                };
+                
+                _context.TicketSkills.Add(newTicketSkill);
+            }
+            _context.SaveChanges();
         }
     }
 }

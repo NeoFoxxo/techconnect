@@ -14,9 +14,9 @@ namespace techconnect.Repository
             _context = dataContext;
         }
 
-        public ICollection<string> GetSkills()
+        public ICollection<Skill> GetSkills()
         {
-            return _context.Skills.Select(s => s.Name).ToList();
+            return _context.Skills.ToList();
         }
         
         

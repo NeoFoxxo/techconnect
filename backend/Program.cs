@@ -27,6 +27,7 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ITechRepository, TechRepository>();
+builder.Services.AddScoped<ISupportRepository, SupportRepository>();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 

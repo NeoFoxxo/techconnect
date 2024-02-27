@@ -1,10 +1,11 @@
 ﻿using techconnect.DTO;
+using techconnect.Models;
 
 namespace techconnect.Interfaces
 {
     public interface ISkillRepository
     {
-        ICollection<string> GetSkills();
+        ICollection<Skill> GetSkills();
         void AddSkill(string skillName);
     }
 }

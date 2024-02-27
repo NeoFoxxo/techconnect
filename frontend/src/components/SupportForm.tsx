@@ -20,33 +20,33 @@ import getSkills from "../utils/queries/getSkills"
 import { SupportFormData } from "../models/SupportFormData"
 
 const SupportSchema = Yup.object().shape({
-	name: Yup.string()
-		.required("Required")
+	clientName: Yup.string()
+		.required("Name Required")
 		.min(3, "Name is too short")
 		.max(25, "Name is too long")
 		.matches(/^[a-zA-Z]+$/, "Name can only contain letters"),
-	email: Yup.string().required("Required").email("Invalid email"),
+	clientEmail: Yup.string().required("Email Required").email("Invalid email"),
 	title: Yup.string()
 		.required("Required")
 		.min(5, "Title is too short")
 		.max(55, "Title is too long"),
 	description: Yup.string()
-		.required("Required")
+		.required("Description Required")
 		.min(10, "Description is too short"),
-	urgency: Yup.string().required("Required"),
-	tags: Yup.array().required("Required").min(1, "Please select a tag"),
+	urgency: Yup.string().required("Urgency Required"),
+	skills: Yup.array().required("Required").min(1, "Please select a tag"),
 })
 
 const urgencyOptions = ["Low", "Normal", "Critical"]
 const labelStyle = { paddingBottom: 2 }
 
 const initialValues: SupportFormData = {
-	name: "",
-	email: "",
+	clientName: "",
+	clientEmail: "",
 	title: "",
 	description: "",
 	urgency: "",
-	tags: [],
+	skills: [],
 }
 
 export default function SupportForm() {
@@ -66,10 +66,13 @@ export default function SupportForm() {
 		}
 	}
 
-	const skills = useQuery({
+	const allSkills = useQuery({
 		queryKey: ["getSkills"],
 		queryFn: () => getSkills(),
 	})
+
+	// extract skill names
+	const skills = allSkills.data?.map((skill) => skill.name)
 
 	return (
 		<Container sx={{ width: isMobile ? "50%" : "auto", padding: 3 }}>
@@ -78,7 +81,7 @@ export default function SupportForm() {
 					initialValues={initialValues}
 					validationSchema={SupportSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						handleSubmit(values)
+						console.log(values)
 						setSubmitting(false)
 					}}
 				>
@@ -86,38 +89,46 @@ export default function SupportForm() {
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
 								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-								{skills.error && (
-									<Alert severity="error">{`Error fetching tags: ${skills.error.message}`}</Alert>
+								{allSkills.error && (
+									<Alert severity="error">{`Error fetching tags: ${allSkills.error.message}`}</Alert>
 								)}
 								<Grid item>
 									<FormControl fullWidth>
-										<FormLabel htmlFor="name" sx={labelStyle}>
+										<FormLabel htmlFor="clientName" sx={labelStyle}>
 											Name
 										</FormLabel>
 										<Field
 											as={TextField}
-											id="name"
-											name="name"
+											id="clientName"
+											name="clientName"
 											placeholder="Name"
 											type="text"
-											error={errors.name && touched.name}
-											helperText={errors.name && touched.name && errors.name}
+											error={errors.clientName && touched.clientName}
+											helperText={
+												errors.clientName &&
+												touched.clientName &&
+												errors.clientName
+											}
 										/>
 									</FormControl>
 								</Grid>
 								<Grid item>
 									<FormControl fullWidth>
-										<FormLabel htmlFor="email" sx={labelStyle}>
+										<FormLabel htmlFor="clientEmail" sx={labelStyle}>
 											Email
 										</FormLabel>
 										<Field
 											as={TextField}
-											id="email"
-											name="email"
+											id="clientEmail"
+											name="clientEmail"
 											placeholder="example@email.com"
 											type="email"
-											error={errors.email && touched.email}
-											helperText={errors.email && touched.email && errors.email}
+											error={errors.clientEmail && touched.clientEmail}
+											helperText={
+												errors.clientEmail &&
+												touched.clientEmail &&
+												errors.clientEmail
+											}
 										/>
 									</FormControl>
 								</Grid>
@@ -184,25 +195,27 @@ export default function SupportForm() {
 									/>
 								</Grid>
 								<Grid item>
-									<FormLabel htmlFor="tags" sx={labelStyle}>
+									<FormLabel htmlFor="skills" sx={labelStyle}>
 										Choose Relevant Tags for Your Issue
 									</FormLabel>
 									<Autocomplete
 										multiple
-										id="tags"
-										value={values.tags}
-										loading={skills.isLoading}
+										id="skills"
+										value={values.skills}
+										loading={allSkills.isLoading}
 										onChange={(_, value) =>
-											setFieldValue("tags", value || null)
+											setFieldValue("skills", value || null)
 										}
 										onBlur={handleBlur}
-										options={skills.data ? skills.data : []}
+										options={skills ? skills : []}
 										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
 											<TextField
 												{...params}
-												error={!!errors.tags && touched.tags}
-												helperText={errors.tags && touched.tags && errors.tags}
+												error={!!errors.skills && touched.skills}
+												helperText={
+													errors.skills && touched.skills && errors.skills
+												}
 												label="Select Tags"
 												placeholder="Tags"
 											/>

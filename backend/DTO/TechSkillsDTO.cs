@@ -2,7 +2,8 @@ namespace techconnect.DTO
 {
     public class TechSkillsDTO
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
         public int Rating { get; set; }
     }
 }

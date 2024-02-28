@@ -4,6 +4,6 @@ export interface TicketInfo {
 	title: string
 	description: string
 	urgency: string
-	skills: string[]
+	skillNames: string[]
 	techId: string
 }

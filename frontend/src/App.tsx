@@ -14,6 +14,7 @@ import Manager from "./pages/manager/Manager"
 import CreateTechnician from "./pages/manager/CreateTechnician"
 import TechDetails from "./pages/manager/TechDetails"
 import AddSkill from "./pages/manager/AddSkill"
+import Support from "./pages/client/Support"
 
 const darkTheme = createTheme({
 	palette: {
@@ -32,6 +33,7 @@ export default function App() {
 					path="/client/createsupportrequest"
 					element={<CreateSupportRequest />}
 				/>
+				<Route path="/client/support" element={<Support />} />
 				<Route path="/tech" element={<Tech />} />
 				<Route path="/tech/login" element={<TechLogin />} />
 				<Route path="/tech/ticket/:ticketId" element={<Ticket />} />

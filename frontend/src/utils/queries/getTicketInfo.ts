@@ -1,7 +1,7 @@
 import { TicketInfo } from "../../models/TicketInfo"
 
 export default async function getTicketInfo(
-	ticketId: string | undefined
+	ticketId: string | undefined | null
 ): Promise<TicketInfo[] | null> {
 	const res = await fetch(
 		`${import.meta.env.VITE_API}/ticket/info/${ticketId}`,

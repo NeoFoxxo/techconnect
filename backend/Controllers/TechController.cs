@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using techconnect.DTO;
 using techconnect.Interfaces;
-using techconnect.Models;
 
 namespace techconnect.Controllers
 {
@@ -55,7 +54,6 @@ namespace techconnect.Controllers
         }
         
         [HttpGet("info/{techId}")]
-        [Authorize(Roles = "Manager")]
         public IActionResult GetTechInfo(string techId)
         {
             var techInfo = _techRepository.GetTechInfo(techId);

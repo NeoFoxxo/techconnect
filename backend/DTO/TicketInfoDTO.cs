@@ -7,7 +7,8 @@ namespace techconnect.DTO
         public string Title { get; set; }
         public string Description { get; set; }
         public string Urgency { get; set; }
-        public ICollection<string> Skills { get; set; }
+        public ICollection<int> Skills { get; set; }
+        public ICollection<string>? SkillNames { get; set; }
         public string TechId { get; set; }
     }
 }

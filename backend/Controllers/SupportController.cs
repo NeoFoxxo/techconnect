@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using techconnect.DTO;
 using techconnect.Interfaces;
 using techconnect.Models;
 
@@ -9,10 +10,12 @@ namespace techconnect.Controllers
     public class SupportController : ControllerBase
     {
         private readonly ISupportRepository _supportRepository;
+        private readonly ITicketRepository _ticketRepository;
 
-        public SupportController(ISupportRepository supportRepository)
+        public SupportController(ISupportRepository supportRepository, ITicketRepository ticketRepository)
         {
             _supportRepository = supportRepository;
+            _ticketRepository = ticketRepository;
         }
         
         [HttpPost]
@@ -21,8 +24,27 @@ namespace techconnect.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var bestTechs = await _supportRepository.FindTech(request); 
-            return Ok(bestTechs);
+            try
+            {
+                var bestTech = await _supportRepository.FindTech(request);
+                var supportTicket = new TicketInfoDTO
+                {
+                    ClientName = request.ClientName,
+                    ClientEmail = request.ClientEmail,
+                    Title = request.Title,
+                    Urgency = request.Urgency,
+                    Description = request.Description,
+                    Skills = request.Skills,
+                    TechId = bestTech.Tech.Id
+                };
+                var ticketId = _ticketRepository.AddTicket(supportTicket);
+                return Ok(new { Tech = supportTicket.TechId, Ticket = ticketId.Ticket });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new { message = "An error occured when finding Tech & Creating Ticket " + ex.Message });
+            }
         }
     }
 }

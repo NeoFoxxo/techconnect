@@ -1,6 +1,5 @@
 import { Field, Form, Formik } from "formik"
 import * as Yup from "yup"
-import { useState } from "react"
 import {
 	Alert,
 	Autocomplete,
@@ -15,7 +14,7 @@ import {
 } from "@mui/material"
 import supportSubmit from "../utils/queries/supportSubmit"
 import useIsMobile from "../utils/hooks/useIsMobile"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import getSkills from "../utils/queries/getSkills"
 import { SupportFormData } from "../models/SupportFormData"
 
@@ -50,21 +49,14 @@ const initialValues: SupportFormData = {
 }
 
 export default function SupportForm() {
-	const [errorMsg, setErrorMsg] = useState<string | null>(null)
-	const [isLoading, setLoading] = useState(false)
 	const isMobile = useIsMobile()
 
-	async function handleSubmit(formData: SupportFormData) {
-		setLoading(true)
-		const result = await supportSubmit(formData)
-		if (result.error) {
-			setErrorMsg(result.error)
-			setLoading(false)
-		} else {
-			setErrorMsg(null)
-			setLoading(false)
-		}
-	}
+	const createSupportRequest = useMutation({
+		mutationKey: ["createSupportRequest"],
+		mutationFn: (formData: SupportFormData) =>
+			supportSubmit(formData, allSkills.data),
+		onSuccess: () => (window.location.href = "/client/support"),
+	})
 
 	const allSkills = useQuery({
 		queryKey: ["getSkills"],
@@ -81,16 +73,22 @@ export default function SupportForm() {
 					initialValues={initialValues}
 					validationSchema={SupportSchema}
 					onSubmit={(values, { setSubmitting }) => {
-						console.log(values)
+						createSupportRequest.mutate(values)
 						setSubmitting(false)
 					}}
 				>
 					{({ errors, touched, values, setFieldValue, handleBlur }) => (
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
-								{errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-								{allSkills.error && (
-									<Alert severity="error">{`Error fetching tags: ${allSkills.error.message}`}</Alert>
+								{createSupportRequest.isSuccess && (
+									<Alert severity="success">
+										Successfully Submitted Support Request
+									</Alert>
+								)}
+								{createSupportRequest.isError && (
+									<Alert severity="error">
+										{createSupportRequest.error.message}
+									</Alert>
 								)}
 								<Grid item>
 									<FormControl fullWidth>
@@ -201,7 +199,7 @@ export default function SupportForm() {
 									<Autocomplete
 										multiple
 										id="skills"
-										value={values.skills}
+										value={skills}
 										loading={allSkills.isLoading}
 										onChange={(_, value) =>
 											setFieldValue("skills", value || null)
@@ -228,7 +226,7 @@ export default function SupportForm() {
 									justifyContent={"center"}
 									marginTop={2}
 								>
-									{isLoading ? (
+									{createSupportRequest.isPending ? (
 										<CircularProgress />
 									) : (
 										<Button type="submit" variant="contained" size="large">

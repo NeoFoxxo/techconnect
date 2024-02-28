@@ -3,8 +3,8 @@ import { connection } from "../chatConnection"
 import { ChatMessage } from "../../models/ChatMessage"
 
 export default function useChat(
-	name: string | undefined,
-	ticketId: string | undefined
+	name: string | undefined | null,
+	ticketId: string | undefined | null
 ) {
 	const [messages, setMessages] = useState<ChatMessage[]>([])
 
@@ -20,8 +20,9 @@ export default function useChat(
 		}
 	}
 
+	connection.invoke("JoinChat", { name: name, ticketId: ticketId })
+
 	useEffect(() => {
-		connection.invoke("JoinChat", { name: name, ticketId: ticketId })
 		connection.on("ReceiveMessage", (name, message) => {
 			setMessages((prevMessages) => [...prevMessages, { name, message }])
 		})

@@ -1,4 +1,5 @@
 ﻿using techconnect.DTO;
+using techconnect.Repository;
 
 namespace techconnect.Interfaces
 {
@@ -6,6 +7,6 @@ namespace techconnect.Interfaces
     {
         ICollection<TicketDTO> GetTickets(string techId);
         TicketInfoDTO? GetTicketInfo(int ticketId);
-        void AddTicket(TicketInfoDTO ticket);
+        TicketRepository.TicketId AddTicket(TicketInfoDTO ticket);
     }
 }

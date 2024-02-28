@@ -1,16 +1,15 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import { TicketInfo } from "../models/TicketInfo"
 import Divider from "@mui/material/Divider"
 import Chip from "@mui/material/Chip"
 import Grid from "@mui/material/Grid"
-import Button from "@mui/material/Button"
+import { TechInfo } from "../models/TechInfo"
 
-interface TicketInfoProps {
-	ticket: TicketInfo
+interface TechInfoProps {
+	tech: TechInfo | null
 }
 
-export default function TicketDetails({ ticket }: TicketInfoProps) {
+export default function TechInfoBox({ tech }: TechInfoProps) {
 	return (
 		<Box
 			width={400}
@@ -20,31 +19,21 @@ export default function TicketDetails({ ticket }: TicketInfoProps) {
 			padding={2}
 		>
 			<Typography variant="h6" align="center" color="text.primary" paragraph>
-				{ticket.clientName}
+				{tech?.firstName}
 			</Typography>
 			<Divider />
-			<Typography
-				variant="h6"
-				fontSize={"medium"}
-				align="center"
-				color="text.secondary"
-				paragraph
-				paddingTop={2}
-			>
-				{ticket.description}
+			<Typography variant="h6" align="center" color="text.primary" paragraph>
+				{tech?.email}
 			</Typography>
 			<Divider />
 			<Grid container justifyContent="center" spacing={1} padding={1}>
-				{ticket.skillNames.map((skill) => {
+				{tech?.skills.map((skill) => {
 					return (
 						<Grid item>
-							<Chip label={skill} />
+							<Chip label={skill.name} />
 						</Grid>
 					)
 				})}
-			</Grid>
-			<Grid container justifyContent="center" spacing={1} paddingTop={1.8}>
-				<Button variant="contained">Close Ticket</Button>
 			</Grid>
 		</Box>
 	)

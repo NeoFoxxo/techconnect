@@ -48,19 +48,22 @@ namespace techconnect.Repository
                     ClientEmail = t.ClientEmail,
                     Description = t.Description,
                     Urgency = t.Urgency,
-                    Skills = t.TicketSkills.Select(ts => ts.Skill.Name).ToList(),
+                    SkillNames = t.TicketSkills.Select(ts => ts.Skill.Name).ToList(),
                     TechId = t.TechId
                 })
                 .FirstOrDefault();
         }
-        
-        public void AddTicket(TicketInfoDTO ticket)
+        public class TicketId
+        {
+            public int Ticket { get; set; }
+        }
+        public TicketId AddTicket(TicketInfoDTO ticket)
         {
             // add ticket to db
             var newTicket = new Ticket
             {
                 ClientEmail = ticket.ClientEmail,
-                ClientName = ticket.ClientEmail,
+                ClientName = ticket.ClientName,
                 Title = ticket.Title,
                 Description = ticket.Description,
                 Urgency = ticket.Urgency,
@@ -71,13 +74,8 @@ namespace techconnect.Repository
             _context.SaveChanges();
             
             // then add the skills to the ticket
-            foreach (string skillName in ticket.Skills)
+            foreach (int skillId in ticket.Skills)
             {
-                var skillId = _context.Skills
-                    .Where(s => s.Name == skillName)
-                    .Select(s => s.Id)
-                    .FirstOrDefault();
-
                 var newTicketSkill = new TicketSkill
                 {
                     SkillId = skillId,
@@ -87,6 +85,8 @@ namespace techconnect.Repository
                 _context.TicketSkills.Add(newTicketSkill);
             }
             _context.SaveChanges();
+
+            return new TicketId { Ticket = newTicket.Id };
         }
     }
 }

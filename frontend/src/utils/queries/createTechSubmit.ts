@@ -35,7 +35,6 @@ export default async function createTechSubmit(
 	})
 	if (!res.ok) {
 		const errorMessage = await res.json()
-		if (res.status === 401) throw new Error(errorMessage.message)
 		throw new Error(errorMessage.message)
 	}
 	return res

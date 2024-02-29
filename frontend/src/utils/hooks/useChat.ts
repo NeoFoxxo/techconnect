@@ -16,7 +16,15 @@ export default function useChat(
 				message
 			)
 		} catch (error) {
-			console.log(`error sending message: ${error}`)
+			console.log(`Error sending message: ${error}`)
+		}
+	}
+
+	async function closeTicket() {
+		try {
+			await connection.invoke("CloseTicket", { name: name, ticketId: ticketId })
+		} catch (error) {
+			console.log(`Error closing ticket: ${error}`)
 		}
 	}
 
@@ -27,11 +35,27 @@ export default function useChat(
 			setMessages((prevMessages) => [...prevMessages, { name, message }])
 		})
 
+		connection.on("CloseTicket", () => {
+			setMessages((prevMessages) => [
+				...prevMessages,
+				{
+					name: "System",
+					message: "Ticket has been closed, refreshing in 3 seconds",
+				},
+			])
+
+			setTimeout(() => {
+				sessionStorage.clear()
+				location.reload()
+			}, 3000)
+		})
+
 		return () => {
 			connection.invoke("LeaveChat", { name: name, ticketId: ticketId })
 			connection.off("ReceiveMessage")
+			connection.off("CloseTicket")
 		}
 	}, [name, ticketId])
 
-	return { messages, sendMessage }
+	return { messages, sendMessage, closeTicket }
 }

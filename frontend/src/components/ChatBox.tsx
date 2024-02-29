@@ -24,6 +24,19 @@ export default function ChatBox({ messages, sendMessage }: ChatBoxProps) {
 			)}
 			{messages &&
 				messages.map((message) => {
+					if (message.name === "System") {
+						return (
+							<Typography
+								variant="h5"
+								color="text.primary"
+								paragraph
+								align="center"
+								paddingX={2}
+							>
+								<b>{message.name}:</b> {message.message}
+							</Typography>
+						)
+					}
 					return (
 						<Typography
 							variant="h6"

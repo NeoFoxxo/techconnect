@@ -33,10 +33,11 @@ namespace techconnect.Controllers
         [Authorize]
         public IActionResult GetTicketInfo(int ticketId)
         {
-            var ticketInfo = _ticketRepository.GetTicketInfo(ticketId);
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            
+            var ticketInfo = _ticketRepository.GetTicketInfo(ticketId);
+            
             if (ticketInfo == null)
                 return NotFound(new { message = "No Ticket Found With The Given ID" });
             return Ok(ticketInfo);
@@ -57,6 +58,24 @@ namespace techconnect.Controllers
             {
                 return StatusCode(500,
                     new { message = "An error occured when adding ticket: " + ex.Message });
+            }
+        }
+        
+        [HttpDelete("{ticketId}")]
+        [Authorize]
+        public IActionResult DeleteTicket(int ticketId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                _ticketRepository.DeleteTicket(ticketId);
+                return Ok(new { message = "Ticket " + ticketId + " successfully deleted" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new { message = "An error occured when deleting ticket: " + ex.Message });
             }
         }
     }

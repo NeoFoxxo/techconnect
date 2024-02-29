@@ -88,5 +88,13 @@ namespace techconnect.Repository
 
             return new TicketId { Ticket = newTicket.Id };
         }
+        
+        public void DeleteTicket(int ticketId)
+        {
+            Ticket ticket = _context.Tickets.First(t => t.Id == ticketId);
+
+            _context.Tickets.Remove(ticket);
+            _context.SaveChanges();
+        }
     }
 }

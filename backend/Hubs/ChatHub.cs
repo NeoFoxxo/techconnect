@@ -19,6 +19,12 @@ namespace techconnect.Hubs
                 .SendAsync("ReceiveMessage", conn.Name, message);
         }
         
+        public async Task CloseTicket(UserConnection conn)
+        {
+            await Clients.Group("Ticket" + conn.TicketId)
+                .SendAsync("CloseTicket");
+        }
+        
         public async Task LeaveChat(UserConnection conn)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Ticket" + conn.TicketId);

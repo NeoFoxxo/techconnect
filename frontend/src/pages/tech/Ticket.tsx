@@ -24,7 +24,10 @@ export default function Ticket() {
 		enabled: ticketId != undefined && session.data?.id != undefined,
 	})
 
-	const { messages, sendMessage } = useChat(session.data?.firstName, ticketId)
+	const { messages, sendMessage, closeTicket } = useChat(
+		session.data?.firstName,
+		ticketId
+	)
 
 	useEffect(() => {
 		if (session?.data === null) {
@@ -82,7 +85,11 @@ export default function Ticket() {
 						>
 							Current Ticket
 						</Typography>
-						<TicketDetails ticket={ticket.data} />
+						<TicketDetails
+							ticket={ticket.data}
+							ticketId={ticketId}
+							closeTicket={closeTicket}
+						/>
 					</Grid>
 				</Grid>
 			)}

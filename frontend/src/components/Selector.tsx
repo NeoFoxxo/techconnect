@@ -5,22 +5,30 @@ import CardMedia from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import { Link } from "react-router-dom"
 
+const cardSx = {
+	margin: "10px",
+	border: "2px solid white",
+	"&:hover": { border: "2px solid #1976d2", boxShadow: 3 },
+}
+const cardMediaSx = {
+	height: "28vh",
+	width: "auto",
+}
+
 export default function Selector() {
-	const cardSx = {
-		margin: "10px",
-		border: "2px solid white",
-		"&:hover": { border: "2px solid #1976d2", boxShadow: 3 },
-	}
-	const cardMediaSx = {
-		height: "28vh",
-		width: "auto",
+	const hasTicket = sessionStorage.getItem("ticket")
+
+	let clientLink: string = "/client/createsupportrequest"
+
+	if (hasTicket) {
+		clientLink = "/client/support"
 	}
 
 	return (
 		<Grid container justifyContent={"center"} paddingTop={8}>
 			<Grid item>
 				<Card sx={cardSx}>
-					<Link to="/client/createsupportrequest">
+					<Link to={clientLink}>
 						<CardMedia
 							component={"img"}
 							src="/img/sunset.jpg"

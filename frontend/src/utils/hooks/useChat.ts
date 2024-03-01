@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { connection } from "../chatConnection"
 import { ChatMessage } from "../../models/ChatMessage"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../state/store"
+import { addMessage } from "../../state/chatMessages/chatMessages"
 
 export default function useChat(
 	name: string | undefined | null,
 	ticketId: string | undefined | null
 ) {
-	const [messages, setMessages] = useState<ChatMessage[]>([])
+	// get the chat messages for the ticket from redux
+	const messages: ChatMessage[] = useSelector(
+		(state: RootState) =>
+			state.chatMessages.chats.find((chat) => chat.ticketId === ticketId)
+				?.messages || []
+	)
+
+	const dispatch = useDispatch()
 
 	async function sendMessage(message: string) {
 		try {
@@ -32,18 +42,18 @@ export default function useChat(
 
 	useEffect(() => {
 		connection.on("ReceiveMessage", (name, message) => {
-			setMessages((prevMessages) => [...prevMessages, { name, message }])
+			const chatMessage: ChatMessage = { name: name, message: message }
+			dispatch(addMessage({ chatTicketId: ticketId, message: chatMessage }))
 		})
 
 		connection.on("CloseTicket", () => {
-			setMessages((prevMessages) => [
-				...prevMessages,
-				{
-					name: "System",
-					message: "Ticket has been closed, refreshing in 3 seconds",
-				},
-			])
-
+			const closeTicketMessage: ChatMessage = {
+				name: "System",
+				message: "Ticket has been closed, refreshing in 3 seconds",
+			}
+			dispatch(
+				addMessage({ chatTicketId: ticketId, message: closeTicketMessage })
+			)
 			setTimeout(() => {
 				sessionStorage.clear()
 				location.reload()
@@ -51,7 +61,6 @@ export default function useChat(
 		})
 
 		return () => {
-			connection.invoke("LeaveChat", { name: name, ticketId: ticketId })
 			connection.off("ReceiveMessage")
 			connection.off("CloseTicket")
 		}

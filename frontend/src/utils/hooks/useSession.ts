@@ -21,6 +21,7 @@ export default function useSession(): UseQueryResult<Session | null, Error> {
 	const session: UseQueryResult<Session | null, Error> = useQuery({
 		queryKey: ["session"],
 		queryFn: getSession,
+		staleTime: 1000 * 60 * 5,
 	})
 
 	return session

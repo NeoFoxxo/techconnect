@@ -24,13 +24,6 @@ namespace techconnect.Hubs
             await Clients.Group("Ticket" + conn.TicketId)
                 .SendAsync("CloseTicket");
         }
-        
-        public async Task LeaveChat(UserConnection conn)
-        {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Ticket" + conn.TicketId);
-
-            await Clients.Group("Ticket" + conn.TicketId).SendAsync("LeaveChat", $"{conn.Name} has left the Ticket{conn.TicketId} chat");
-        }
     }   
 }
 

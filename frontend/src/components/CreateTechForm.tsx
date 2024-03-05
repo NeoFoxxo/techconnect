@@ -71,9 +71,12 @@ export default function CreateTechForm() {
 				<Formik
 					initialValues={initialValues}
 					validationSchema={TechSchema}
-					onSubmit={(values, { setSubmitting }) => {
-						createTech.mutate(values)
-						setSubmitting(false)
+					onSubmit={(values, { setFieldError }) => {
+						if (values.firstname.toLowerCase() === "system") {
+							setFieldError("firstname", "Please input a valid first name")
+						} else {
+							createTech.mutate(values)
+						}
 					}}
 				>
 					{({ errors, touched, values, setFieldValue, handleBlur }) => (

@@ -1,10 +1,8 @@
 import Button from "@mui/material/Button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import useSession from "../utils/hooks/useSession"
 import { logoutSubmit } from "../utils/queries/logoutSubmit"
 
 export default function LogoutButton() {
-	const session = useSession()
 	const queryClient = useQueryClient()
 
 	const logout = useMutation({
@@ -19,12 +17,8 @@ export default function LogoutButton() {
 	}
 
 	return (
-		<>
-			{session?.data && (
-				<Button color="inherit" onClick={() => onButtonClick()}>
-					Logout
-				</Button>
-			)}
-		</>
+		<Button color="inherit" onClick={() => onButtonClick()}>
+			Logout
+		</Button>
 	)
 }

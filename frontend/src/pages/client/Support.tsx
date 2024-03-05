@@ -12,12 +12,14 @@ import { useEffect } from "react"
 import Error from "../../components/Error"
 import getTechInfo from "../../utils/queries/getTechInfo"
 import TechInfoBox from "../../components/TechInfoBox"
+import useIsMobile from "../../utils/hooks/useIsMobile"
 
 export default function Support() {
 	const navigate = useNavigate()
 	const ticketId = sessionStorage.getItem("ticket")
 	const techId = sessionStorage.getItem("tech")
 	const name = sessionStorage.getItem("name")
+	const isMobile = useIsMobile()
 
 	useEffect(() => {
 		if (ticketId === null || techId === null || name === null) {
@@ -34,10 +36,15 @@ export default function Support() {
 	const { messages, sendMessage } = useChat(name, ticketId)
 
 	return (
-		<Box paddingX={5} width={"90%"} marginX="auto">
+		<Box
+			paddingX={isMobile ? 5 : 0}
+			width={isMobile ? "90%" : "100%"}
+			marginX="auto"
+			paddingBottom={5}
+		>
 			<Typography
 				component="h1"
-				variant="h3"
+				variant={isMobile ? "h3" : "h4"}
 				paddingTop={2}
 				align="center"
 				color="text.primary"
@@ -53,10 +60,10 @@ export default function Support() {
 				</Grid>
 			)}
 			{tech.isSuccess && (
-				<Grid container wrap={"wrap"}>
+				<Grid container wrap={"wrap"} justifyContent={"center"}>
 					<Grid item flex={1}>
 						<Typography
-							variant="h5"
+							variant={"h5"}
 							padding={2}
 							align="center"
 							color="text.primary"
@@ -68,7 +75,7 @@ export default function Support() {
 					</Grid>
 					<Grid item>
 						<Typography
-							variant="h5"
+							variant={"h5"}
 							padding={2}
 							align="center"
 							color="text.primary"
@@ -76,7 +83,9 @@ export default function Support() {
 						>
 							Technician Details
 						</Typography>
-						<TechInfoBox tech={tech.data} />
+						<Grid item alignSelf={"center"}>
+							<TechInfoBox tech={tech.data} />
+						</Grid>
 					</Grid>
 				</Grid>
 			)}

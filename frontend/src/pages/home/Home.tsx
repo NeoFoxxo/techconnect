@@ -21,7 +21,7 @@ export default function Home() {
 						Welcome to TechConnect
 					</Typography>
 					<Typography
-						variant="h5"
+						variant={isMobile ? "h5" : "h6"}
 						align="center"
 						color="text.secondary"
 						paragraph

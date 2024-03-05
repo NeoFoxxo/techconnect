@@ -12,11 +12,13 @@ import { TicketInfo } from "../../models/TicketInfo"
 import TicketDetails from "../../components/TicketDetails"
 import ChatBox from "../../components/ChatBox"
 import useChat from "../../utils/hooks/useChat"
+import useIsMobile from "../../utils/hooks/useIsMobile"
 
 export default function Ticket() {
 	const { ticketId } = useParams()
 	const session = useSession()
 	const navigate = useNavigate()
+	const isMobile = useIsMobile()
 
 	const ticket: UseQueryResult<TicketInfo> = useQuery({
 		queryKey: ["getTicketInfo", ticketId],
@@ -43,10 +45,15 @@ export default function Ticket() {
 	}
 
 	return (
-		<Box paddingX={5} width={"90%"} marginX="auto">
+		<Box
+			paddingX={isMobile ? 5 : 0}
+			width={isMobile ? "90%" : "100%"}
+			marginX="auto"
+			paddingBottom={5}
+		>
 			<Typography
 				component="h1"
-				variant="h3"
+				variant={isMobile ? "h3" : "h4"}
 				paddingTop={2}
 				align="center"
 				color="text.primary"
@@ -62,7 +69,7 @@ export default function Ticket() {
 				</Grid>
 			)}
 			{ticket.isSuccess && (
-				<Grid container wrap={"wrap"}>
+				<Grid container wrap={"wrap"} justifyContent={"center"}>
 					<Grid item flex={1}>
 						<Typography
 							variant="h5"

@@ -37,12 +37,11 @@ export default function SendChatForm({ sendMessage }: SendChatFormProps) {
 								name="message"
 								label="Message"
 								error={errors.message}
-								helperText={errors.message && errors.message}
 							/>
 							<Grid item>
 								<Button
 									type="submit"
-									size="large"
+									size="small"
 									sx={{ height: "60px", marginBottom: "7px" }}
 									variant="contained"
 									color="primary"

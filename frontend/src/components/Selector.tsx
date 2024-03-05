@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import { Link } from "react-router-dom"
+import useIsMobile from "../utils/hooks/useIsMobile"
 
 const cardSx = {
 	margin: "10px",
@@ -24,8 +25,9 @@ export default function Selector() {
 		clientLink = "/client/support"
 	}
 
+	const isMobile = useIsMobile()
 	return (
-		<Grid container justifyContent={"center"} paddingTop={8}>
+		<Grid container justifyContent={"center"} paddingTop={isMobile ? 8 : 1}>
 			<Grid item>
 				<Card sx={cardSx}>
 					<Link to={clientLink}>

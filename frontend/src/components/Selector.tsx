@@ -33,7 +33,7 @@ export default function Selector() {
 					<Link to={clientLink}>
 						<CardMedia
 							component={"img"}
-							src="/img/sunset.jpg"
+							src="/img/client.jpg"
 							sx={cardMediaSx}
 						/>
 						<CardContent>
@@ -47,11 +47,7 @@ export default function Selector() {
 			<Grid item>
 				<Card sx={cardSx}>
 					<Link to="/tech">
-						<CardMedia
-							component={"img"}
-							src="/img/sunset.jpg"
-							sx={cardMediaSx}
-						/>
+						<CardMedia component={"img"} src="/img/tech.jpg" sx={cardMediaSx} />
 						<CardContent>
 							<Typography variant="h5" align="center" color="text.primary">
 								Technician
@@ -65,7 +61,7 @@ export default function Selector() {
 					<Link to="/manager">
 						<CardMedia
 							component={"img"}
-							src="/img/sunset.jpg"
+							src="/img/manager.jpg"
 							sx={cardMediaSx}
 						/>
 						<CardContent>

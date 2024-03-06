@@ -75,5 +75,41 @@ namespace techconnect.Repository
                     Skills = techSkills
                 }).FirstOrDefault();
         }
+        
+        public async Task EditTech(EditTechDTO newTechInfo, string techId)
+        {
+            var tech = await _userManager.FindByIdAsync(techId);
+
+            if (tech == null)
+            {
+                throw new ArgumentException("No Tech Found With The Given TechID", nameof(techId));
+            }
+
+            ICollection<UserSkill> newSkills = [];
+            
+            // TODO: The process to update skills is inefficient
+            foreach (TechSkillsDTO skill in newTechInfo.Skills)
+            {
+                
+                var newUserSkill = new UserSkill
+                {
+                    SkillId = skill.Id,
+                    Rating = skill.Rating,
+                    TechId = techId
+                };
+                newSkills.Add(newUserSkill);
+            }
+
+            var currentSkills = _context.UserSkills.Where(us => us.TechId == techId);
+            _context.UserSkills.RemoveRange(currentSkills);
+            await _context.SaveChangesAsync();
+            
+            tech.FirstName = newTechInfo.FirstName;
+            tech.Email = newTechInfo.Email;
+            tech.UserName = newTechInfo.Email;
+            tech.UserSkills = newSkills;
+            await _userManager.UpdateAsync(tech);
+        }
+        
     }
 }

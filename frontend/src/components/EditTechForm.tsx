@@ -14,52 +14,57 @@ import {
 	TextField,
 } from "@mui/material"
 import useIsMobile from "../utils/hooks/useIsMobile"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import getSkills from "../utils/queries/getSkills"
-import { CreateTechFormData } from "../models/CreateTechFormData"
-import createTechSubmit from "../utils/queries/createTechSubmit"
 import { Fragment } from "react"
+import { EditTechFormData } from "../models/EditTechFormData"
+import { TechInfo } from "../models/TechInfo"
+import editTechSubmit from "../utils/queries/editTechSubmit"
 
 const TechSchema = Yup.object().shape({
-	firstname: Yup.string()
+	firstName: Yup.string()
 		.required("Required")
 		.min(3, "Name is too short")
 		.max(25, "Name is too long")
 		.matches(/^[a-zA-Z]+$/, "Name can only contain letters"),
 	email: Yup.string().required("Required").email("Invalid email"),
-	password: Yup.string()
-		.required("Required")
-		.min(5, "Password is too short")
-		.matches(/^(?=.*[a-z])/, "Must contain a lowercase letter")
-		.matches(/^(?=.*[A-Z])/, "Must contain an uppercase letter")
-		.matches(/^(?=.*\d)/, "Must contain a digit")
-		.matches(/^(?=.*[@$!%*?&])/, "Must contain a special character"),
 	skills: Yup.array().required("Required").min(1, "Please select a skill"),
 })
 
 const labelStyle = { paddingBottom: 2 }
 
-const initialValues: CreateTechFormData = {
-	firstname: "",
-	email: "",
-	password: "",
-	skills: [],
-	skillRating: [],
-}
-
-export default function EditTechForm() {
+export default function EditTechForm({
+	techDetails,
+}: {
+	techDetails: TechInfo | null | undefined
+}) {
 	const isMobile = useIsMobile()
+	const queryClient = useQueryClient()
 
-	const createTech = useMutation({
+	const editTech = useMutation({
 		mutationKey: ["createTechnician"],
-		mutationFn: (formData: CreateTechFormData) => createTechSubmit(formData),
-		onSuccess: () => (window.location.href = "/manager"),
+		mutationFn: (formData: EditTechFormData) =>
+			editTechSubmit(formData, allSkills.data),
+		onSuccess: async () =>
+			await queryClient.invalidateQueries({
+				queryKey: ["getTechInfo", techDetails?.id],
+			}),
 	})
 
-	const skills = useQuery({
+	const allSkills = useQuery({
 		queryKey: ["getSkills"],
 		queryFn: () => getSkills(),
 	})
+
+	const initialValues: EditTechFormData = {
+		id: techDetails?.id,
+		firstName: techDetails?.firstName,
+		email: techDetails?.email,
+		skills: techDetails?.skills.map((skill) => skill.name),
+		skillRating: techDetails?.skills.map((skill) => skill.rating),
+	}
+
+	const skills = allSkills.data?.map((skill) => skill.name)
 
 	return (
 		<Container sx={{ width: isMobile ? "50%" : "auto", padding: 3 }}>
@@ -67,38 +72,41 @@ export default function EditTechForm() {
 				<Formik
 					initialValues={initialValues}
 					validationSchema={TechSchema}
-					onSubmit={(values, { setSubmitting }) => {
-						createTech.mutate(values)
-						setSubmitting(false)
+					onSubmit={(values, { setFieldError }) => {
+						if (values?.firstName?.toLowerCase() === "system") {
+							setFieldError("firstName", "Please input a valid first name")
+						} else {
+							editTech.mutate(values)
+						}
 					}}
 				>
 					{({ errors, touched, values, setFieldValue, handleBlur }) => (
 						<Form>
 							<Grid container direction={"column"} spacing={2}>
-								{createTech.isSuccess && (
+								{editTech.isSuccess && (
 									<Alert severity="success">
 										Successfully Edited Technician
 									</Alert>
 								)}
-								{createTech.isError && (
-									<Alert severity="error">{createTech.error.message}</Alert>
+								{editTech.isError && (
+									<Alert severity="error">{editTech.error.message}</Alert>
 								)}
 								<Grid item>
 									<FormControl fullWidth>
-										<FormLabel htmlFor="firstname" sx={labelStyle}>
+										<FormLabel htmlFor="firstName" sx={labelStyle}>
 											First Name
 										</FormLabel>
 										<Field
 											as={TextField}
-											id="firstname"
-											name="firstname"
+											id="firstName"
+											name="firstName"
 											placeholder="First Name"
 											type="text"
-											error={errors.firstname && touched.firstname}
+											error={errors.firstName && touched.firstName}
 											helperText={
-												errors.firstname &&
-												touched.firstname &&
-												errors.firstname
+												errors.firstName &&
+												touched.firstName &&
+												errors.firstName
 											}
 										/>
 									</FormControl>
@@ -120,23 +128,6 @@ export default function EditTechForm() {
 									</FormControl>
 								</Grid>
 								<Grid item>
-									<FormControl fullWidth>
-										<FormLabel htmlFor="password" sx={labelStyle}>
-											Password
-										</FormLabel>
-										<Field
-											as={TextField}
-											id="password"
-											name="password"
-											type="password"
-											error={errors.password && touched.password}
-											helperText={
-												errors.password && touched.password && errors.password
-											}
-										/>
-									</FormControl>
-								</Grid>
-								<Grid item>
 									<FormLabel htmlFor="skills" sx={labelStyle}>
 										Technician Skills
 									</FormLabel>
@@ -144,12 +135,11 @@ export default function EditTechForm() {
 										multiple
 										id="skills"
 										value={values.skills}
-										loading={skills.isLoading}
 										onChange={(_, value) =>
 											setFieldValue("skills", value || null)
 										}
 										onBlur={handleBlur}
-										options={skills.data ? skills.data : []}
+										options={skills ? skills : []}
 										sx={{ paddingTop: 2 }}
 										renderInput={(params) => (
 											<TextField
@@ -164,7 +154,7 @@ export default function EditTechForm() {
 										)}
 									/>
 								</Grid>
-								{values.skills[0] && (
+								{values?.skills && (
 									<Grid
 										item
 										display={"flex"}
@@ -184,13 +174,13 @@ export default function EditTechForm() {
 									alignItems={"center"}
 									width={300}
 								>
-									{values.skills.map((skill, index) => (
+									{values?.skills?.map((skill, index) => (
 										<Fragment key={index}>
 											<FormLabel htmlFor="rating">{skill}</FormLabel>
 											<Slider
 												onChange={(_, value) => {
-													let ratings = [...values.skillRating]
-													ratings[index] = (value as number) || 1
+													let ratings = [...values?.skillRating]
+													ratings[index] = value || 1
 													setFieldValue("skillRating", ratings)
 												}}
 												id={`${skill}Rating`}
@@ -198,7 +188,7 @@ export default function EditTechForm() {
 												valueLabelDisplay="auto"
 												step={1}
 												marks
-												value={values.skillRating[index] || 1}
+												value={values?.skillRating[index] || 1}
 												min={1}
 												max={10}
 											/>
@@ -211,11 +201,11 @@ export default function EditTechForm() {
 									justifyContent={"center"}
 									marginTop={2}
 								>
-									{createTech.isPending ? (
+									{editTech.isPending ? (
 										<CircularProgress />
 									) : (
 										<Button type="submit" variant="contained" size="large">
-											Create Technician
+											Edit Technician
 										</Button>
 									)}
 								</Grid>

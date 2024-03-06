@@ -16,25 +16,6 @@ namespace techconnect.Controllers
             _techRepository = techRepository;
         }
 
-        [HttpPost("skills/{techId}")]
-        [Authorize(Roles = "Manager")]
-        public IActionResult AddTechSkills([FromBody] ICollection<TechSkillsDTO> skills, string techId)
-        {
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            try
-            {
-                _techRepository.AddTechSkills(skills, techId);
-                return Ok(new { message =  skills.Count + " skills successfully added" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500,
-                    new { message = "An unexpected error occured when adding skill to technician: " + ex.Message });
-            }
-        }
-
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetTechnicians()
@@ -66,5 +47,24 @@ namespace techconnect.Controllers
         }
         
         // TODO: Edit Technician endpoint (name, email)
+        [HttpPatch("edit/{techId}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> EditTech([FromBody] EditTechDTO newTechInfo, string techId)
+        {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            try
+            {
+                await _techRepository.EditTech(newTechInfo, techId);
+                return Ok(new { message =  newTechInfo.FirstName + " successfully updated" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new { message = "An unexpected error occured when updating Technician: " + ex.Message });
+            }
+        }
     }
 }

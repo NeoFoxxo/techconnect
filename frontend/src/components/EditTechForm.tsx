@@ -179,6 +179,7 @@ export default function EditTechForm({
 											<FormLabel htmlFor="rating">{skill}</FormLabel>
 											<Slider
 												onChange={(_, value) => {
+													//@ts-expect-error
 													let ratings = [...values?.skillRating]
 													ratings[index] = value || 1
 													setFieldValue("skillRating", ratings)
@@ -188,6 +189,7 @@ export default function EditTechForm({
 												valueLabelDisplay="auto"
 												step={1}
 												marks
+												//@ts-expect-error
 												value={values?.skillRating[index] || 1}
 												min={1}
 												max={10}

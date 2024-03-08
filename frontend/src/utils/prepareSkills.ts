@@ -13,11 +13,10 @@ export default function prepareSkills(
 	})
 	let skills: { id: number | undefined; rating: number }[] = []
 
-	// assign the skilrating to the related skill and add them both to an object
 	skillIds?.forEach((skillid, index) => {
-		// since i used the same index as the skill array we can find the related skillrating
+		//@ts-expect-error
 		let skillRating = formData?.skillRating[index]
-		skills.push({ id: skillid, rating: skillRating || 1 })
+		skills.push({ id: skillid, rating: skillRating })
 	})
 
 	return skills

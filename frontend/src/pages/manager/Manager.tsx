@@ -73,16 +73,12 @@ export default function Manager() {
 						>
 							<Grid item>
 								<Link to="createtech">
-									<Button variant="contained" href="/">
-										Create New Technician
-									</Button>
+									<Button variant="contained">Create New Technician</Button>
 								</Link>
 							</Grid>
 							<Grid item>
 								<Link to="addskill">
-									<Button variant="contained" href="/">
-										Add New Skill
-									</Button>
+									<Button variant="contained">Add New Skill</Button>
 								</Link>
 							</Grid>
 						</Grid>

@@ -43,7 +43,7 @@ export default function Sidebar() {
 							"Joe: Reset Password",
 							"Joe: Sharepoint Link",
 							"Mike: Server Outage",
-						].map((text, index) => (
+						].map((text) => (
 							<ListItem key={text} disablePadding>
 								<ListItemButton>
 									<ListItemText primary={text} />

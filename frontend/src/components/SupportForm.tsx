@@ -17,6 +17,7 @@ import useIsMobile from "../utils/hooks/useIsMobile"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import getSkills from "../utils/queries/getSkills"
 import { SupportFormData } from "../models/SupportFormData"
+import { useNavigate } from "react-router-dom"
 
 const SupportSchema = Yup.object().shape({
 	clientName: Yup.string()
@@ -50,12 +51,12 @@ const initialValues: SupportFormData = {
 
 export default function SupportForm() {
 	const isMobile = useIsMobile()
-
+	const navigate = useNavigate()
 	const createSupportRequest = useMutation({
 		mutationKey: ["createSupportRequest"],
 		mutationFn: (formData: SupportFormData) =>
 			supportSubmit(formData, allSkills.data),
-		onSuccess: () => (window.location.href = "/client/support"),
+		onSuccess: () => navigate("/client/loading"),
 	})
 
 	const allSkills = useQuery({
@@ -72,9 +73,8 @@ export default function SupportForm() {
 				<Formik
 					initialValues={initialValues}
 					validationSchema={SupportSchema}
-					onSubmit={(values, { setSubmitting }) => {
+					onSubmit={(values) => {
 						createSupportRequest.mutate(values)
-						setSubmitting(false)
 					}}
 				>
 					{({ errors, touched, values, setFieldValue, handleBlur }) => (

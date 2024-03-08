@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import useIsMobile from "../../utils/hooks/useIsMobile"
+import HelpModal from "../../components/HelpModal"
 
 export default function Home() {
 	const isMobile = useIsMobile()
@@ -10,6 +11,7 @@ export default function Home() {
 		<main>
 			<Box paddingTop={5}>
 				<Container maxWidth="xl">
+					<HelpModal />
 					<Typography
 						component="h1"
 						variant={isMobile ? "h2" : "h3"}

@@ -90,7 +90,7 @@ export default function Ticket() {
 							color="text.primary"
 							fontWeight="bold"
 						>
-							Current Ticket
+							Ticket Info
 						</Typography>
 						<TicketDetails
 							ticket={ticket.data}

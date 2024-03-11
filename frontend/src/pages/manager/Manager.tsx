@@ -24,6 +24,7 @@ export default function Manager() {
 		queryKey: ["getTechnicians"],
 		enabled: session.data?.id != undefined, // only query when the id is defined
 		queryFn: () => getTechs(),
+		retry: false,
 	})
 
 	if (techs.error?.message === "403") {

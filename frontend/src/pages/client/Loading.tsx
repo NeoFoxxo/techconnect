@@ -22,10 +22,10 @@ export default function Loading() {
 	const progressRef = useRef(() => {})
 	useEffect(() => {
 		progressRef.current = () => {
-			if (Math.round(progress) >= 100) {
+			if (Math.round(progress) >= 91) {
 				navigate("/client/support")
 			}
-			const diff = 18
+			const diff = 14
 			const diff2 = Math.random() * 10
 			setProgress(progress + diff)
 			setBuffer(progress + diff + diff2)
@@ -35,7 +35,7 @@ export default function Loading() {
 	useEffect(() => {
 		const progressTimer = setInterval(() => {
 			progressRef.current()
-		}, 1000)
+		}, 780)
 
 		const progressTextTimer = setInterval(() => {
 			setProgressText((prevProgressText) => {
@@ -45,7 +45,7 @@ export default function Loading() {
 					return prevProgressText
 				}
 			})
-		}, 1000)
+		}, 900)
 
 		return () => {
 			clearInterval(progressTimer)

@@ -25,7 +25,7 @@ const steps = [
 	{
 		label: "Client",
 		description: `To use the app you must first select a role, one of these roles is the client. 
-			A client can create a support request, including relevent information including as the skills required. 
+			A client can create a support request, including relevent information such as the skills required. 
 			After the request is made the client will then be paired with a technician and have the ability communicate through text chat.`,
 	},
 	{

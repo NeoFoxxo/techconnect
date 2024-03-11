@@ -20,10 +20,6 @@ export interface LoginFormData {
 	password: string
 }
 
-interface LoginProps {
-	isManager: boolean
-}
-
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().required("Required").email("Invalid email"),
 	password: Yup.string().required("Required").min(5, "Password is too short"),
@@ -31,7 +27,7 @@ const LoginSchema = Yup.object().shape({
 
 const labelStyle = { paddingBottom: 2 }
 
-export default function LoginForm({ isManager }: LoginProps) {
+export default function LoginForm({ isManager }: { isManager: boolean }) {
 	let redirectLink: string = "/tech"
 
 	if (isManager) {

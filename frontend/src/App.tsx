@@ -17,7 +17,7 @@ import AddSkill from "./pages/manager/AddSkill"
 import Support from "./pages/client/Support"
 import Loading from "./pages/client/Loading"
 
-const darkTheme = createTheme({
+const defaultTheme = createTheme({
 	palette: {
 		mode: "light",
 	},
@@ -25,7 +25,7 @@ const darkTheme = createTheme({
 
 export default function App() {
 	return (
-		<ThemeProvider theme={darkTheme}>
+		<ThemeProvider theme={defaultTheme}>
 			<CssBaseline />
 			<Topbar />
 			<Routes>

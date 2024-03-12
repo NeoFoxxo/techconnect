@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins("https://localhost:5173", "https://localhost:4173")
+            policy.WithOrigins("https://techconnect.d2ict.net", "https://localhost:5173", "https://localhost:4173")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();

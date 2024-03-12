@@ -7,7 +7,6 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"
 import CssBaseline from "@mui/material/CssBaseline"
 import TechLogin from "./pages/tech/TechLogin"
 import NotFound from "./pages/notfound/NotFound"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Ticket from "./pages/tech/Ticket"
 import ManagerLogin from "./pages/manager/ManagerLogin"
 import Manager from "./pages/manager/Manager"
@@ -46,7 +45,6 @@ export default function App() {
 				<Route path="/manager/addskill" element={<AddSkill />} />
 				<Route path="*" element={<NotFound />} />
 			</Routes>
-			<ReactQueryDevtools initialIsOpen={false} />
 		</ThemeProvider>
 	)
 }

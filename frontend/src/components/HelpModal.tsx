@@ -20,21 +20,21 @@ const steps = [
 		label: "Welcome to TechConnect",
 		description: `TechConnect allows clients to submit their IT issues 
 		and receive support from the technician best suited to solve their issue. This is achieved through the use of a custom matchmaking 
-		algorithm. This algorithm takes into account the skills needed to solve the issue and pairs the user with the technician that is proficient in these skills.`,
+		algorithm. This algorithm takes into account the skills needed to solve the issue and pairs the user with a technician who is proficient in these skills.`,
 	},
 	{
 		label: "Client",
-		description: `To use the app you must first select a role, one of these roles is the client. 
-			A client can create a support request, including relevent information such as the skills required. 
-			After the request is made the client will then be paired with a technician and have the ability communicate through text chat.`,
+		description: `To use the app, you must first select a role. 
+		The client role has the ability to create a support request with relevant information such as the skills required. 
+		After this request is made, the client will then be paired with a technician and have the ability to communicate through text chat.`,
 	},
 	{
 		label: "Technician",
-		description: `Technicians can view all tickets assigned to them and interact with clients through text chat. Once the issue is resolved the technician has the ability to close the ticket.  `,
+		description: `Technicians can view all tickets assigned to them and interact with clients through text chat. Once the issue is resolved, the technician has the ability to close the ticket.`,
 	},
 	{
 		label: "Manager",
-		description: `Managers have the highest level of privilage, allowing them to create new technicians, edit technicians, and add new skills.`,
+		description: `Managers have the highest level of privilege, allowing them to create new technicians, edit technicians, and add new skills.`,
 	},
 ]
 

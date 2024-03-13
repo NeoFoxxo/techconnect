@@ -27,3 +27,18 @@ To run this on your local machine, you will need to have the <strong>latest LTS 
 7. Open your terminal and run `npm install` and `npm run build`
 8. Then run the `npm run start` command
 9. Access the app on port 4173 and enjoy!
+
+## Website Images
+
+<table>
+  <img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/tech-current-ticket.png" alt="current ticket page" width="100%">
+  <img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/createsupportrequest.png" alt="create support request form" width="100%">
+  <tr>
+    <td><img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/technicians.png" alt="manager viewing technicians" width="100%"></td>
+    <td><img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/tech-details.png" alt="manager editing technician" width="110%"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/tech-login.png" alt="technician login" width="100%"></td>
+    <td><img src="https://github.com/NeoFoxxo/techconnect/blob/main/images/tech-tickets.png" alt="technician viewing tickets" width="100%"></td>
+  </tr>
+</table>

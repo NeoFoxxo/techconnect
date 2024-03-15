@@ -30,7 +30,7 @@ export default function Selector() {
 		<Grid container justifyContent={"center"} paddingTop={isMobile ? 8 : 1}>
 			<Grid item>
 				<Card sx={cardSx}>
-					<Link to={clientLink}>
+					<Link to={clientLink} reloadDocument>
 						<CardMedia
 							component={"img"}
 							src="/img/client.jpg"

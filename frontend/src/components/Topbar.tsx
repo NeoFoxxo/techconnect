@@ -7,6 +7,7 @@ import LogoutButton from "./LogoutButton"
 import useIsMobile from "../utils/hooks/useIsMobile"
 import useSession from "../utils/hooks/useSession"
 import { Button, Grid } from "@mui/material"
+import Hamburger from "./Hamburger"
 
 export default function Topbar() {
 	const isMobile = useIsMobile()
@@ -15,32 +16,51 @@ export default function Topbar() {
 	return (
 		<Box>
 			<AppBar position="static" sx={{ zIndex: 1 }}>
-				<Toolbar sx={{ justifyContent: isMobile ? "space-between" : "center" }}>
+				<Toolbar sx={{ justifyContent: "space-between" }}>
 					<Link to="/">
 						<Typography variant="h5" component="div" fontWeight="bold">
 							TechConnect
 						</Typography>
 					</Link>
 					<Grid>
-						{session?.data?.role === "Technician" && (
+						{!isMobile && (
 							<>
-								<Link to={"/tech"}>
-									<Button color="inherit" sx={{ paddingX: 2 }}>
-										Tickets
-									</Button>
-								</Link>
+								{session?.data && (
+									<Hamburger role={session?.data?.role ?? null} />
+								)}
 							</>
 						)}
-						{session?.data?.role === "Manager" && (
+						{isMobile && (
 							<>
-								<Link to={"/manager"}>
-									<Button color="inherit" sx={{ paddingX: 2 }}>
-										Technicians
-									</Button>
-								</Link>
+								{session?.data?.role === "Technician" && (
+									<Link to={"/tech"}>
+										<Button color="inherit" sx={{ paddingX: 2 }}>
+											Tickets
+										</Button>
+									</Link>
+								)}
+								{session?.data?.role === "Manager" && (
+									<Link to={"/manager"}>
+										<Button color="inherit" sx={{ paddingX: 2 }}>
+											Technicians
+										</Button>
+									</Link>
+								)}
+								{session?.data && <LogoutButton />}
+								<a
+									href="https://github.com/NeoFoxxo/techconnect"
+									target="_blank"
+									style={{ paddingLeft: 15 }}
+								>
+									<img
+										src="/img/github.svg"
+										height={"30"}
+										width={"30"}
+										style={{ verticalAlign: "middle" }}
+									/>
+								</a>
 							</>
 						)}
-						{session?.data && <LogoutButton />}
 					</Grid>
 				</Toolbar>
 			</AppBar>

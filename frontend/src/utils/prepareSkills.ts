@@ -14,8 +14,7 @@ export default function prepareSkills(
 	let skills: { id: number | undefined; rating: number }[] = []
 
 	skillIds?.forEach((skillid, index) => {
-		//@ts-expect-error
-		let skillRating = formData?.skillRating[index]
+		let skillRating = formData?.skillRating![index]
 		skills.push({ id: skillid, rating: skillRating })
 	})
 

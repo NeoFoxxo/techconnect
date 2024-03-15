@@ -189,8 +189,7 @@ export default function EditTechForm({
 												valueLabelDisplay="auto"
 												step={1}
 												marks
-												//@ts-expect-error
-												value={values?.skillRating[index] || 1}
+												value={values?.skillRating![index] || 1}
 												min={1}
 												max={10}
 											/>

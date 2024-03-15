@@ -21,7 +21,6 @@ builder.Services.AddCors(options =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
@@ -35,6 +34,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 443;
+});
 
 var app = builder.Build();
 

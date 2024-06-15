@@ -1,6 +1,6 @@
 # TechConnect
 
-TechConnect is a tech support platform that utilises matchmaking algorithm to pair a client with the technician best suited to
+TechConnect is a tech support platform that utilises a matchmaking algorithm to pair a client with the technician best suited to
 solve their issue.
 
 <br><a href="https://techconnect.d2ict.net" target="_blank"><b>Try Out TechConnect</b></a>
